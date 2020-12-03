@@ -103,6 +103,9 @@ func main() {
 		log.Fatalf("Error finalising blob uploads %v", err)
 	}
 	log.Printf("Action Digest: %v %v %v %d", actionDigest.GetHashBlake3Zcc(), hex.EncodeToString(actionDigest.GetHashBlake3Zcc()), actionDigest.GetHashOther(), actionDigest.GetSizeBytes())
+	log.Printf("Bytes Uploaded: %v", blobUploader.GetBytesUploaded())
+	log.Printf("Time Hashing: %v", blobUploader.GetTimeHashing())
+	log.Printf("Time Uploading: %v", blobUploader.GetTimeUploading())
 
 	executionClient := remoteexecution.NewExecutionClient(conn)
 

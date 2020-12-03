@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"hash"
 	"io"
+	"log"
 	"os"
 	"path"
 	"strings"
+	"time"
 
 	remoteexecution "github.com/bazelbuild/remote-apis/build/bazel/remote/execution/v2"
 	"github.com/golang/protobuf/proto"
@@ -35,6 +37,9 @@ type blobUploader struct {
 	maxSize          int
 	hash             hash.Hash
 	blake            bool
+	bytesUploaded    int64
+	timeHashing      int64
+	timeUploading    int64
 }
 
 func NewBlobUploader(conn grpc.ClientConnInterface, instanceName string, maxSize int, hash hash.Hash, blake bool) (*blobUploader, func(context.Context) error) {
@@ -52,11 +57,24 @@ func NewBlobUploader(conn grpc.ClientConnInterface, instanceName string, maxSize
 	}
 }
 
+func (bu *blobUploader) GetBytesUploaded() int64 {
+	return bu.bytesUploaded
+}
+
+func (bu *blobUploader) GetTimeHashing() int64 {
+	return bu.timeHashing
+}
+
+func (bu *blobUploader) GetTimeUploading() int64 {
+	return bu.timeUploading
+}
+
 func (bu *blobUploader) Add(ctx context.Context, digest *remoteexecution.Digest, b []byte) error {
 	hash := digest.GetHashOther()
 	if hash == "" {
 		hash = fmt.Sprintf("B3Z:%s", hex.EncodeToString(digest.GetHashBlake3Zcc()))
 	}
+	log.Printf("Hash: %v", hash)
 	if _, ok := bu.blobs[hash]; ok {
 		return nil
 	}
@@ -111,6 +129,7 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 		blobBytes := bu.blobs[hash].b
 		bytes := make([]byte, maxSize)
 		n := copy(bytes, blobBytes)
+		timeBefore := time.Now().UnixNano()
 		for n > 0 {
 			// Write request for non-terminating chunk
 			writeRequest := &bpb.WriteRequest{
@@ -121,6 +140,8 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 			}
 
 			if err = wr.Send(writeRequest); err != nil {
+				//writeResponse, err := wr.CloseAndRecv()
+				//log.Printf("Write Response: %v", writeResponse)
 				return err
 			}
 			resourceName = ""
@@ -141,9 +162,13 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		if committedSize := writeResponse.GetCommittedSize(); committedSize < size {
+		timeAfter := time.Now().UnixNano()
+		bu.timeUploading += (timeAfter - timeBefore)
+		committedSize := writeResponse.GetCommittedSize()
+		if committedSize < size {
 			return status.Errorf(codes.Unknown, "Committed size was %d, expected %d", committedSize, size)
 		}
+		bu.bytesUploaded += committedSize
 		delete(bu.blobs, hash)
 	}
 	bu.blobs = make(map[string]*blob)
@@ -209,15 +234,18 @@ func (bu *blobUploader) createFileNode(ctx context.Context, fileName string) (*r
 
 	bu.hash.Reset()
 
+	timeBefore := time.Now().UnixNano()
 	size, err := io.Copy(bu.hash, file)
 	if err != nil {
 		return nil, err
 	}
+	hashBytes := bu.hash.Sum(nil)
+	timeAfter := time.Now().UnixNano()
+	bu.timeHashing += (timeAfter - timeBefore)
 	_, err = file.Seek(0, 0)
 	if err != nil {
 		return nil, err
 	}
-	hashBytes := bu.hash.Sum(nil)
 
 	fileNode := &remoteexecution.FileNode{
 		Name:         stat.Name(),
@@ -249,11 +277,14 @@ func (bu *blobUploader) protoToDigest(m proto.Message) (*remoteexecution.Digest,
 		return nil, nil, err
 	}
 	bu.hash.Reset()
+	timeBefore := time.Now().UnixNano()
 	_, err = bu.hash.Write(bytes)
 	if err != nil {
 		return nil, nil, err
 	}
 	hashBytes := bu.hash.Sum(nil)
+	timeAfter := time.Now().UnixNano()
+	bu.timeHashing += (timeAfter - timeBefore)
 	if bu.blake {
 		return &remoteexecution.Digest{
 			HashBlake3Zcc: hashBytes,
