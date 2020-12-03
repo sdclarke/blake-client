@@ -66,9 +66,16 @@ func (bu *blobUploader) Add(ctx context.Context, digest *remoteexecution.Digest,
 		if err != nil {
 			return err
 		}
-		bu.blobs = make(map[string]*blob)
 	}
 	return nil
+}
+
+func (bu *blobUploader) AddProto(ctx context.Context, m proto.Message) (*remoteexecution.Digest, error) {
+	digest, bytes, err := bu.protoToDigest(m)
+	if err != nil {
+		return nil, err
+	}
+	return digest, bu.Add(ctx, digest, bytes)
 }
 
 func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
@@ -102,36 +109,33 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 
 		writeOffset := int64(0)
 		blobBytes := bu.blobs[hash].b
-		for {
-			bytes := make([]byte, maxSize)
-			n := copy(bytes, blobBytes)
-			for n > 0 {
-				// Write request for non-terminating chunk of file
-				writeRequest_file := &bpb.WriteRequest{
-					ResourceName: resourceName,
-					WriteOffset:  writeOffset,
-					FinishWrite:  false,
-					Data:         bytes[:n],
-				}
-
-				if err = wr.Send(writeRequest_file); err != nil {
-					return err
-				}
-				resourceName = ""
-				writeOffset += int64(n)
-				blobBytes = blobBytes[n:]
-				n = copy(bytes, blobBytes)
-			}
-			// Write request for terminating chunk of file
-			writeRequest_file := &bpb.WriteRequest{
+		bytes := make([]byte, maxSize)
+		n := copy(bytes, blobBytes)
+		for n > 0 {
+			// Write request for non-terminating chunk
+			writeRequest := &bpb.WriteRequest{
 				ResourceName: resourceName,
 				WriteOffset:  writeOffset,
-				FinishWrite:  true,
+				FinishWrite:  false,
+				Data:         bytes[:n],
 			}
-			if err = wr.Send(writeRequest_file); err != nil {
+
+			if err = wr.Send(writeRequest); err != nil {
 				return err
 			}
-			break
+			resourceName = ""
+			writeOffset += int64(n)
+			blobBytes = blobBytes[n:]
+			n = copy(bytes, blobBytes)
+		}
+		// Write request for terminating chunk
+		writeRequest := &bpb.WriteRequest{
+			ResourceName: resourceName,
+			WriteOffset:  writeOffset,
+			FinishWrite:  true,
+		}
+		if err = wr.Send(writeRequest); err != nil {
+			return err
 		}
 		writeResponse, err := wr.CloseAndRecv()
 		if err != nil {
@@ -140,7 +144,9 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 		if committedSize := writeResponse.GetCommittedSize(); committedSize < size {
 			return status.Errorf(codes.Unknown, "Committed size was %d, expected %d", committedSize, size)
 		}
+		delete(bu.blobs, hash)
 	}
+	bu.blobs = make(map[string]*blob)
 	return nil
 }
 
@@ -178,27 +184,9 @@ func (bu *blobUploader) createDirectory(ctx context.Context, files []*remoteexec
 		Files:       files,
 		Directories: directories,
 	}
-	bytes, err := proto.Marshal(directory)
+	inputRootDigest, bytes, err := bu.protoToDigest(directory)
 	if err != nil {
 		return nil, err
-	}
-	bu.hash.Reset()
-	_, err = bu.hash.Write(bytes)
-	if err != nil {
-		return nil, err
-	}
-	hashBytes := bu.hash.Sum(nil)
-	var inputRootDigest *remoteexecution.Digest
-	if bu.blake {
-		inputRootDigest = &remoteexecution.Digest{
-			HashBlake3Zcc: hashBytes,
-			SizeBytes:     int64(len(bytes)),
-		}
-	} else {
-		inputRootDigest = &remoteexecution.Digest{
-			HashOther: hex.EncodeToString(hashBytes),
-			SizeBytes: int64(len(bytes)),
-		}
 	}
 	bu.Add(ctx, inputRootDigest, bytes)
 	return inputRootDigest, nil
@@ -253,4 +241,27 @@ func (bu *blobUploader) createFileNode(ctx context.Context, fileName string) (*r
 	}
 	bu.Add(ctx, fileNode.Digest, bytes)
 	return fileNode, nil
+}
+
+func (bu *blobUploader) protoToDigest(m proto.Message) (*remoteexecution.Digest, []byte, error) {
+	bytes, err := proto.Marshal(m)
+	if err != nil {
+		return nil, nil, err
+	}
+	bu.hash.Reset()
+	_, err = bu.hash.Write(bytes)
+	if err != nil {
+		return nil, nil, err
+	}
+	hashBytes := bu.hash.Sum(nil)
+	if bu.blake {
+		return &remoteexecution.Digest{
+			HashBlake3Zcc: hashBytes,
+			SizeBytes:     int64(len(bytes)),
+		}, bytes, nil
+	}
+	return &remoteexecution.Digest{
+		HashOther: hex.EncodeToString(hashBytes),
+		SizeBytes: int64(len(bytes)),
+	}, bytes, nil
 }
