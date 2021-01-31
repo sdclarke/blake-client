@@ -30,16 +30,17 @@ type blob struct {
 }
 
 type blobUploader struct {
-	bytestreamClient bpb.ByteStreamClient
-	casClient        remoteexecution.ContentAddressableStorageClient
-	blobs            map[string]*blob
-	instanceName     string
-	maxSize          int
-	hash             hash.Hash
-	blake            bool
-	bytesUploaded    int64
-	timeHashing      int64
-	timeUploading    int64
+	bytestreamClient   bpb.ByteStreamClient
+	casClient          remoteexecution.ContentAddressableStorageClient
+	blobs              map[string]*blob
+	instanceName       string
+	maxSize            int
+	hash               hash.Hash
+	blake              bool
+	bytesUploaded      int64
+	timeHashing        int64
+	timeUploading      int64
+	timeFindingMissing int64
 }
 
 func NewBlobUploader(conn grpc.ClientConnInterface, instanceName string, maxSize int, hash hash.Hash, blake bool) (*blobUploader, func(context.Context) error) {
@@ -67,6 +68,10 @@ func (bu *blobUploader) GetTimeHashing() int64 {
 
 func (bu *blobUploader) GetTimeUploading() int64 {
 	return bu.timeUploading
+}
+
+func (bu *blobUploader) GetTimeFindingMissing() int64 {
+	return bu.timeFindingMissing
 }
 
 func (bu *blobUploader) Add(ctx context.Context, digest *remoteexecution.Digest, b []byte) error {
@@ -104,10 +109,13 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 	for _, blob := range bu.blobs {
 		findMissingRequest.BlobDigests = append(findMissingRequest.BlobDigests, blob.digest)
 	}
+	timeBeforeFindMissing := time.Now().UnixNano()
 	findMissingResponse, err := bu.casClient.FindMissingBlobs(ctx, findMissingRequest)
 	if err != nil {
 		return err
 	}
+	timeAfterFindMissing := time.Now().UnixNano()
+	bu.timeFindingMissing += (timeAfterFindMissing - timeBeforeFindMissing)
 	missing := findMissingResponse.GetMissingBlobDigests()
 	for _, digest := range missing {
 		wr, err := bu.bytestreamClient.Write(ctx)
@@ -180,6 +188,7 @@ func (bu *blobUploader) UploadDirectory(ctx context.Context, directory string) (
 	if err != nil {
 		return nil, err
 	}
+	defer dir.Close()
 	fileNames, err := dir.Readdir(0)
 	if err != nil {
 		return nil, err
