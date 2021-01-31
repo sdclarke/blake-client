@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
+	"path"
 	"time"
 
 	remoteexecution "github.com/bazelbuild/remote-apis/build/bazel/remote/execution/v2"
@@ -22,11 +24,23 @@ import (
 var (
 	commands = []*remoteexecution.Command{
 		{
-			Arguments:   []string{"cp", "in", "out"},
+			Arguments:   []string{"cp", "in0", "out"},
 			OutputPaths: []string{"out"},
 		},
 		{
-			Arguments:   []string{"cat", "in", "in", ">", "out"},
+			Arguments:   []string{"sh", "-c", "cat in0 in0 > out"},
+			OutputPaths: []string{"out"},
+		},
+		{
+			Arguments:   []string{"sh", "-c", "cat in0 in1 > out"},
+			OutputPaths: []string{"out"},
+		},
+		{
+			Arguments:   []string{"sh", "-c", "cp in0 out && truncate -r in1 out"},
+			OutputPaths: []string{"out"},
+		},
+		{
+			Arguments:   []string{"sh", "-c", "cp in0 out && printf ' ' | dd of=out bs=1 count=1 seek=%d conv=notrunc"},
 			OutputPaths: []string{"out"},
 		},
 	}
@@ -45,8 +59,8 @@ func parseFlags() (string, string, int) {
 	flag.BoolVar(&blake, "b", true, "True for BLAKE3ZCC, false for SHA256 (shorthand)")
 	flag.StringVar(&inputRoot, "directory", "", "The directory to be the input root of the action")
 	flag.StringVar(&inputRoot, "d", "", "The directory to be the input root of the action (shorthand)")
-	flag.IntVar(&commandNumber, "command", 0, "The number of the command to be run (0-0)")
-	flag.IntVar(&commandNumber, "c", 0, "The number of the command to be run (0-0)")
+	flag.IntVar(&commandNumber, "command", 0, fmt.Sprintf("The number of the command to be run (0-%d)", len(commands)-1))
+	flag.IntVar(&commandNumber, "c", 0, fmt.Sprintf("The number of the command to be run (0-%d)", len(commands)-1))
 	flag.Parse()
 
 	return address, inputRoot, commandNumber
@@ -54,12 +68,14 @@ func parseFlags() (string, string, int) {
 
 func main() {
 	address, inputRoot, commandNumber := parseFlags()
+	if commandNumber >= len(commands) || commandNumber < 0 {
+		log.Fatalf("Command number is invalid, must be in range 0-%d", len(commands)-1)
+	}
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	//casClient := remoteexecution.NewContentAddressableStorageClient(conn)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -89,6 +105,20 @@ func main() {
 	}
 
 	command := commands[commandNumber]
+	if commandNumber == 4 {
+		file, err := os.Open(path.Join(inputRoot, "in0"))
+		if err != nil {
+			log.Fatalf("Error opening input file: %v", err)
+		}
+
+		stat, err := file.Stat()
+		if err != nil {
+			log.Fatalf("Error stating input file: %v", err)
+		}
+		file.Close()
+		command.Arguments[2] = fmt.Sprintf(command.Arguments[2], stat.Size()/2)
+		log.Printf("Command: %v", command)
+	}
 	commandDigest, err := blobUploader.AddProto(ctx, command)
 	if err != nil {
 		log.Fatalf("Error uploading command: %v", err)
@@ -137,18 +167,6 @@ func main() {
 		log.Fatalf("Error receiving results: %v", err)
 	}
 	log.Printf("Execute response: %v", executeResponse)
-
-	actionCacheClient := remoteexecution.NewActionCacheClient(conn)
-
-	actionResult, err := actionCacheClient.GetActionResult(ctx, &remoteexecution.GetActionResultRequest{
-		InstanceName: instanceName.String(),
-		ActionDigest: actionDigest,
-	})
-	if err != nil {
-		log.Fatalf("Error getting action result: %v", err)
-	}
-
-	log.Printf("Action result: %v", actionResult)
 }
 
 func createAction(commandDigest, inputRootDigest *remoteexecution.Digest) *remoteexecution.Action {
