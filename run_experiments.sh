@@ -7,6 +7,10 @@ do
     s) size=${OPTARG};;
   esac
 done
+if [ ! -d "experiment_logs_${size}" ]
+then
+  mkdir "experiment_logs_${size}"
+fi
 for e in experiments/*
 do
   for c in {0..4}
