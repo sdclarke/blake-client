@@ -1,0 +1,20 @@
+Loading: 
+Loading: 0 packages loaded
+Analyzing: target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured)
+INFO: Analyzed target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+[0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
+Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
+  bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher
+INFO: Elapsed time: 0.068s, Critical Path: 0.00s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher -a localhost:8980 -d /home/scott/buildbarn/blake-client/experiments/e6 -c 4 '-b=false'
+INFO: Build completed successfully, 1 total action
+2021/02/01 15:25:55 Hash: fce39a0f0e6ce839cf5a10407ec90135e2a80fd62e94511217a1d3e629291b9b
+2021/02/01 15:25:56 Hash: 17a80b40edcd6d3ac836ca056f83cb6c844bc96f65bc397f2b0578ba60db3093
+2021/02/01 15:25:56 Hash: 8a10cae5f0b77d4e86b7491e3a0533a1985d41598bb42de661b4405f2958eb4e
+2021/02/01 15:25:56 Command: arguments:"sh" arguments:"-c" arguments:"cp in0 out && printf ' ' | dd of=out bs=1 count=1 seek=277872640 conv=notrunc" output_paths:"out" 
+2021/02/01 15:25:56 Hash: 4634fef9f885a7d55f425b14ed9d4099cb92ef67f66c31a555fd035bb1b85359
+2021/02/01 15:25:56 Hash: 26e286a002211f06b7e48dcc563f39b5d9d09ef8ed072e044eae55e2bbe75b7a
+2021/02/01 15:25:56 Error finalising blob uploads EOF

@@ -1,0 +1,24 @@
+Loading: 
+Loading: 0 packages loaded
+Analyzing: target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured)
+INFO: Analyzed target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+[0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
+Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
+  bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher
+INFO: Elapsed time: 0.067s, Critical Path: 0.00s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher -a localhost:8980 -d /home/scott/buildbarn/blake-client/experiments/e7 -c 1 '-b=true'
+INFO: Build completed successfully, 1 total action
+2021/02/01 15:16:56 Hash: B3Z:6ef6b4a9579e1a902114eec0247e0b5a2fdde1176f6682e985b7343e261b1296
+2021/02/01 15:16:58 Hash: B3Z:48bfa2c5c40ab7e81e2893e2c9394b768f7f4cc6300f86b8d23973b548b5715e
+2021/02/01 15:16:58 Hash: B3Z:ffa328f23aa90d8e15aa4a61200e155a214553755acaf568156dc4b7419d0c77
+2021/02/01 15:16:58 Hash: B3Z:95f1a8b8421e32df87826aa0d29f40b20c295a3f603de6d2533dc0d717f40852
+2021/02/01 15:16:58 Hash: B3Z:9f298b2937e5a889f1d8b4f9096bc583f3dfe2e4189dcc1424a160afefea6186
+2021/02/01 15:16:58 Action Digest: [159 41 139 41 55 229 168 137 241 216 180 249 9 107 197 131 243 223 226 228 24 157 204 20 36 161 96 175 239 234 97 134] 9f298b2937e5a889f1d8b4f9096bc583f3dfe2e4189dcc1424a160afefea6186  76
+2021/02/01 15:16:58 Bytes Uploaded: 76
+2021/02/01 15:16:58 Time Hashing: 4.577007031s
+2021/02/01 15:16:58 Time Uploading: 425.742µs
+2021/02/01 15:16:58 Time Finding Missing Blobs: 195.58332ms
+2021/02/01 15:17:59 Execute response: result:<execution_metadata:<worker:"{\"datacenter\":\"paris\",\"hostname\":\"ubuntu-worker.example.com\",\"rack\":\"4\",\"slot\":\"15\",\"thread\":\"3\"}" queued_timestamp:<seconds:1612192618 nanos:850523403 > worker_start_timestamp:<seconds:1612192618 nanos:850726226 > worker_completed_timestamp:<seconds:1612192679 nanos:268036654 > input_fetch_start_timestamp:<seconds:1612192618 nanos:851476960 > input_fetch_completed_timestamp:<seconds:1612192673 nanos:780980362 > execution_start_timestamp:<seconds:1612192673 nanos:780980362 > execution_completed_timestamp:<seconds:1612192674 nanos:455011160 > output_upload_start_timestamp:<seconds:1612192674 nanos:455011160 > output_upload_completed_timestamp:<seconds:1612192679 nanos:268036654 > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.POSIXResourceUsage" value:"\n\004\020\350\263\033\022\006\020\340\350\256\241\002\030\200\300\264\t8\314\001X\210\200\207\001x\003\200\001E" > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.FilePoolResourceUsage" > > > status:<code:3 message:"Failed to store output file \"out\": Failed to upload file: Buffer requires a manifest that is 8847457 bytes in size, while a maximum of 8388608 bytes is permitted" > message:"Action details (uncached result): /uncached_action_result/blake-client/B3Z:6d99e89343f93f6afeb6d49202c0d513e4c84b2da2fa25df71826e4c9a31c3a9/608/" 
