@@ -1,0 +1,19 @@
+Loading: 
+Loading: 0 packages loaded
+Analyzing: target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured)
+INFO: Analyzed target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+[0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
+Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
+  bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher
+INFO: Elapsed time: 0.060s, Critical Path: 0.00s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher -a localhost:8980 -d /home/scott/buildbarn/blake-client/experiments/e3 -c 3 '-b=false'
+INFO: Build completed successfully, 1 total action
+2021/02/01 15:25:10 Hash: fce39a0f0e6ce839cf5a10407ec90135e2a80fd62e94511217a1d3e629291b9b
+2021/02/01 15:25:11 Hash: 6d523cf5f78a61fa146c3550c40d4f23b11cd2d69c7fd0555dbe1355cba7a888
+2021/02/01 15:25:11 Hash: 206bfe7f4980ac2e46a8c354d640b7dcfbab2d75c2277bb86c2cd4270a947cac
+2021/02/01 15:25:11 Hash: fc8f7ebcae29b1a99f8ef31c259df5db6244c70ebfb86af990c2af6cd4ee41fc
+2021/02/01 15:25:11 Hash: 1440ca94259bbd66b1421e60a932d901cad4641aa9907d7a9fdd615bc3e78509
+2021/02/01 15:25:11 Error finalising blob uploads EOF
