@@ -49,40 +49,40 @@ case $size in
     ;;
   small_multi)
     dd if=/dev/zero of=in0 bs=$((1*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((2*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((2*8192+1)) count=1
     cd ../e2
     dd if=/dev/zero of=in0 bs=$((1*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((4*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((4*8192+1)) count=1
     cd ../e3
     dd if=/dev/zero of=in0 bs=$((1*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((5*8192-1)) count=1
+    dd if=/dev/zero of=in1 bs=$((5*8192-1)) count=1
     cd ../e4
     dd if=/dev/zero of=in0 bs=$((2*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((4*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((4*8192+1)) count=1
     cd ../e5
     dd if=/dev/zero of=in0 bs=$((2*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((5*8192-1)) count=1
+    dd if=/dev/zero of=in1 bs=$((5*8192-1)) count=1
     cd ../e6
     dd if=/dev/zero of=in0 bs=$((4*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((5*8192-1)) count=1
+    dd if=/dev/zero of=in1 bs=$((5*8192-1)) count=1
     cd ../e7
     dd if=/dev/zero of=in0 bs=$((5*8192-1)) count=1
-    dd if=/dev/zero of=in0 bs=$((4*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((4*8192+1)) count=1
     cd ../e8
     dd if=/dev/zero of=in0 bs=$((5*8192-1)) count=1
-    dd if=/dev/zero of=in0 bs=$((2*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((2*8192+1)) count=1
     cd ../e9
     dd if=/dev/zero of=in0 bs=$((5*8192-1)) count=1
-    dd if=/dev/zero of=in0 bs=$((1*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((1*8192+1)) count=1
     cd ../e10
     dd if=/dev/zero of=in0 bs=$((4*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((2*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((2*8192+1)) count=1
     cd ../e11
     dd if=/dev/zero of=in0 bs=$((4*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((1*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((1*8192+1)) count=1
     cd ../e12
     dd if=/dev/zero of=in0 bs=$((2*8192+1)) count=1
-    dd if=/dev/zero of=in0 bs=$((1*8192+1)) count=1
+    dd if=/dev/zero of=in1 bs=$((1*8192+1)) count=1
     ;;
   medium)
     dd if=/dev/zero of=in0 bs=$((5*8192+1)) count=1
@@ -231,5 +231,10 @@ case $size in
     cd ../e12
     dd if=/dev/zero of=in0 bs=$((275*1024*1024+1)) count=1
     dd if=/dev/zero of=in1 bs=$((265*1024*1024)) count=1
+    ;;
+  docker)
+    docker save ubuntu:0 > in0
+    cd ../e2
+    docker save ubuntu:1 > in0
     ;;
 esac
