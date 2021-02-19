@@ -6,14 +6,15 @@ INFO: Found 1 target...
 [0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
 Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
   bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher
-INFO: Elapsed time: 0.073s, Critical Path: 0.00s
+INFO: Elapsed time: 0.074s, Critical Path: 0.00s
 INFO: 0 processes.
 INFO: Build completed successfully, 1 total action
 INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher -a localhost:8980 -d /home/scott/buildbarn/blake-client/experiments/e6 -c 1 '-b=false'
 INFO: Build completed successfully, 1 total action
-2021/02/01 15:25:47 Hash: fce39a0f0e6ce839cf5a10407ec90135e2a80fd62e94511217a1d3e629291b9b
-2021/02/01 15:25:48 Hash: 17a80b40edcd6d3ac836ca056f83cb6c844bc96f65bc397f2b0578ba60db3093
-2021/02/01 15:25:48 Hash: 8a10cae5f0b77d4e86b7491e3a0533a1985d41598bb42de661b4405f2958eb4e
-2021/02/01 15:25:48 Hash: 8ac82c9245239eed86e41c610a024096adf5a90ff857e300c1b91d60ca13e856
-2021/02/01 15:25:48 Hash: 5396ff62f9308f79805ebc026281547378dd815f7cbf8a76e2b4e508003972dd
-2021/02/01 15:25:48 Error finalising blob uploads EOF
+2021/02/04 12:20:21 Hash: fce39a0f0e6ce839cf5a10407ec90135e2a80fd62e94511217a1d3e629291b9b
+2021/02/04 12:20:22 Hash: 17a80b40edcd6d3ac836ca056f83cb6c844bc96f65bc397f2b0578ba60db3093
+2021/02/04 12:20:22 Hash: 8a10cae5f0b77d4e86b7491e3a0533a1985d41598bb42de661b4405f2958eb4e
+2021/02/04 12:20:22 Hash: 8ac82c9245239eed86e41c610a024096adf5a90ff857e300c1b91d60ca13e856
+2021/02/04 12:20:22 Hash: 5396ff62f9308f79805ebc026281547378dd815f7cbf8a76e2b4e508003972dd
+2021/02/04 12:20:22 Time Hashing: 2.485070087s
+2021/02/04 12:20:22 Error finalising blob uploads EOF
