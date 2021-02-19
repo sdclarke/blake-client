@@ -13,6 +13,7 @@ import (
 	"time"
 
 	remoteexecution "github.com/bazelbuild/remote-apis/build/bazel/remote/execution/v2"
+	"github.com/buildbarn/bb-storage/pkg/digest"
 	"github.com/golang/protobuf/proto"
 	"github.com/google/uuid"
 
@@ -33,18 +34,21 @@ type blobUploader struct {
 	bytestreamClient   bpb.ByteStreamClient
 	casClient          remoteexecution.ContentAddressableStorageClient
 	blobs              map[string]*blob
-	instanceName       string
+	instanceName       digest.InstanceName
 	maxSize            int
 	hash               hash.Hash
 	blake              bool
+	decompose          bool
 	bytesUploaded      int64
 	bytesHashed        int64
 	timeHashing        int64
 	timeUploading      int64
 	timeFindingMissing int64
+	missingBlobs       int64
+	totalBlobs         int64
 }
 
-func NewBlobUploader(conn grpc.ClientConnInterface, instanceName string, maxSize int, hash hash.Hash, blake bool) (*blobUploader, func(context.Context) error) {
+func NewBlobUploader(conn grpc.ClientConnInterface, instanceName digest.InstanceName, maxSize int, hash hash.Hash, blake, decompose bool) (*blobUploader, func(context.Context) error) {
 	bu := &blobUploader{
 		bytestreamClient: bpb.NewByteStreamClient(conn),
 		casClient:        remoteexecution.NewContentAddressableStorageClient(conn),
@@ -53,6 +57,7 @@ func NewBlobUploader(conn grpc.ClientConnInterface, instanceName string, maxSize
 		maxSize:          maxSize,
 		hash:             hash,
 		blake:            blake,
+		decompose:        decompose,
 	}
 	return bu, func(ctx context.Context) error {
 		return bu.findMissingAndUpload(ctx)
@@ -79,16 +84,36 @@ func (bu *blobUploader) GetTimeFindingMissing() int64 {
 	return bu.timeFindingMissing
 }
 
-func (bu *blobUploader) Add(ctx context.Context, digest *remoteexecution.Digest, b []byte) error {
+func (bu *blobUploader) GetMissingBlobs() int64 {
+	return bu.missingBlobs
+}
+
+func (bu *blobUploader) GetTotalBlobs() int64 {
+	return bu.totalBlobs
+}
+
+func (bu *blobUploader) add(ctx context.Context, digest *remoteexecution.Digest, b []byte) error {
 	hash := digest.GetHashOther()
 	if hash == "" {
-		hash = fmt.Sprintf("B3Z:%s", hex.EncodeToString(digest.GetHashBlake3Zcc()))
+		if len(digest.GetHashBlake3Zcc()) != 0 {
+			hash = fmt.Sprintf("B3Z:%s", hex.EncodeToString(digest.GetHashBlake3Zcc()))
+		} else {
+			hash = fmt.Sprintf("B3ZM:%s", hex.EncodeToString(digest.GetHashBlake3ZccManifest()))
+		}
 	}
 	log.Printf("Hash: %v", hash)
 	if _, ok := bu.blobs[hash]; ok {
 		return nil
 	}
+	bu.totalBlobs++
 	bu.blobs[hash] = &blob{digest: digest, b: b}
+	return nil
+}
+
+func (bu *blobUploader) Add(ctx context.Context, digest *remoteexecution.Digest, b []byte) error {
+	if err := bu.add(ctx, digest, b); err != nil {
+		return err
+	}
 	if len(bu.blobs) == bu.maxSize {
 		err := bu.findMissingAndUpload(ctx)
 		if err != nil {
@@ -108,11 +133,52 @@ func (bu *blobUploader) AddProto(ctx context.Context, m proto.Message) (*remotee
 
 func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 	findMissingRequest := &remoteexecution.FindMissingBlobsRequest{
-		InstanceName: bu.instanceName,
+		InstanceName: bu.instanceName.String(),
 		BlobDigests:  []*remoteexecution.Digest{},
 	}
 	for _, blob := range bu.blobs {
-		findMissingRequest.BlobDigests = append(findMissingRequest.BlobDigests, blob.digest)
+		if bu.decompose {
+			bbDigest, err := bu.instanceName.NewDigestFromProto(blob.digest)
+			if err != nil {
+				return err
+			}
+			if bbManifestDigest, manifestParser, ok := bbDigest.ToManifest(int64(8192)); ok {
+				bu.totalBlobs--
+				manifestSize := bbManifestDigest.GetSizeBytes()
+				if manifestSize > (9 * 1024 * 1024) {
+					return status.Errorf(codes.InvalidArgument,
+						"Buffer requires a manifest that is %d bytes in size, while a maximum of %d bytes is permitted",
+						manifestSize,
+						9*1024*1024)
+				}
+
+				manifest := make([]byte, 0, manifestSize)
+				data := blob.b
+				for {
+					if len(data) == 0 {
+						break
+					}
+					block := make([]byte, 8192)
+					n := copy(block, data)
+					data = data[n:]
+					block = block[:n]
+					timeBefore := time.Now().UnixNano()
+					bbBlockDigest := manifestParser.AppendBlockDigest(&manifest, block)
+					timeAfter := time.Now().UnixNano()
+					bu.timeHashing += (timeAfter - timeBefore)
+					blockDigest := bbBlockDigest.GetProto()
+					bu.add(ctx, blockDigest, block)
+					findMissingRequest.BlobDigests = append(findMissingRequest.BlobDigests, blockDigest)
+				}
+				manifestDigest := bbManifestDigest.GetProto()
+				bu.add(ctx, manifestDigest, manifest)
+				findMissingRequest.BlobDigests = append(findMissingRequest.BlobDigests, manifestDigest)
+			} else {
+				findMissingRequest.BlobDigests = append(findMissingRequest.BlobDigests, blob.digest)
+			}
+		} else {
+			findMissingRequest.BlobDigests = append(findMissingRequest.BlobDigests, blob.digest)
+		}
 	}
 	timeBeforeFindMissing := time.Now().UnixNano()
 	findMissingResponse, err := bu.casClient.FindMissingBlobs(ctx, findMissingRequest)
@@ -122,6 +188,7 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 	timeAfterFindMissing := time.Now().UnixNano()
 	bu.timeFindingMissing += (timeAfterFindMissing - timeBeforeFindMissing)
 	missing := findMissingResponse.GetMissingBlobDigests()
+	bu.missingBlobs += int64(len(missing))
 	for _, digest := range missing {
 		wr, err := bu.bytestreamClient.Write(ctx)
 		if err != nil {
@@ -132,11 +199,15 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 		size := digest.GetSizeBytes()
 		hash := digest.GetHashOther()
 		if hash == "" {
-			hash = fmt.Sprintf("B3Z:%s", hex.EncodeToString(digest.GetHashBlake3Zcc()))
+			if len(digest.GetHashBlake3Zcc()) != 0 {
+				hash = fmt.Sprintf("B3Z:%s", hex.EncodeToString(digest.GetHashBlake3Zcc()))
+			} else {
+				hash = fmt.Sprintf("B3ZM:%s", hex.EncodeToString(digest.GetHashBlake3ZccManifest()))
+			}
 		}
 
 		resourceNameEnd := fmt.Sprintf("blobs/%s/%d", hash, size)
-		resourceName := path.Join(bu.instanceName, "uploads", uuid.String(), resourceNameEnd)
+		resourceName := path.Join(bu.instanceName.String(), "uploads", uuid.String(), resourceNameEnd)
 
 		writeOffset := int64(0)
 		blobBytes := bu.blobs[hash].b

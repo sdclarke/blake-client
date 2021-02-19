@@ -48,10 +48,11 @@ var (
 
 var blake bool
 
-func parseFlags() (string, string, int) {
+func parseFlags() (string, string, int, bool) {
 	var address string
 	var inputRoot string
 	var commandNumber int
+	var decompose bool
 
 	flag.StringVar(&address, "address", "", "Address of gRPC endpoint for Buildbarn frontend")
 	flag.StringVar(&address, "a", "", "Address of gRPC endpoint for Buildbarn frontend (shorthand)")
@@ -61,13 +62,15 @@ func parseFlags() (string, string, int) {
 	flag.StringVar(&inputRoot, "d", "", "The directory to be the input root of the action (shorthand)")
 	flag.IntVar(&commandNumber, "command", 0, fmt.Sprintf("The number of the command to be run (0-%d)", len(commands)-1))
 	flag.IntVar(&commandNumber, "c", 0, fmt.Sprintf("The number of the command to be run (0-%d)", len(commands)-1))
+	flag.BoolVar(&decompose, "decompose", false, "True to decompose locally when using BLAKE3ZCC")
+	flag.BoolVar(&decompose, "D", false, "True to decompose locally when using BLAKE3ZCC (shorthand)")
 	flag.Parse()
 
-	return address, inputRoot, commandNumber
+	return address, inputRoot, commandNumber, decompose
 }
 
 func main() {
-	address, inputRoot, commandNumber := parseFlags()
+	address, inputRoot, commandNumber, decompose := parseFlags()
 	if commandNumber >= len(commands) || commandNumber < 0 {
 		log.Fatalf("Command number is invalid, must be in range 0-%d", len(commands)-1)
 	}
@@ -94,16 +97,16 @@ func main() {
 		}
 		hash = d.NewHasher()
 	}
-	blobUploader, finaliser := blobuploader.NewBlobUploader(conn, instanceName.String(), 100, hash, blake)
+	blobUploader, finaliser := blobuploader.NewBlobUploader(conn, instanceName, 100, hash, blake, decompose)
 
 	inputRootDigest, err := blobUploader.UploadDirectory(ctx, inputRoot)
 	if err != nil {
 		log.Fatalf("Something went wrong uploading input root: %v", err)
 	}
-	if err != nil {
-		log.Fatalf("Something went wrong uploading input root: %v", err)
-	}
 
+	if decompose {
+		commandNumber = 0
+	}
 	command := commands[commandNumber]
 	if commandNumber == 4 {
 		file, err := os.Open(path.Join(inputRoot, "in0"))
@@ -150,6 +153,8 @@ func main() {
 		log.Fatalf("Error parsing duration: %v", err)
 	}
 	log.Printf("Bytes Uploaded: %v", blobUploader.GetBytesUploaded())
+	log.Printf("Missing Blobs: %v", blobUploader.GetMissingBlobs())
+	log.Printf("Total Blobs: %v", blobUploader.GetTotalBlobs())
 	log.Printf("Time Uploading: %v", uploadingDuration)
 	log.Printf("Time Finding Missing Blobs: %v", findingMissingDuration)
 
