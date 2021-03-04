@@ -43,8 +43,29 @@ func main() {
 	cumulativeUploadTimeServer := int64(0)
 	totalRuns := 0
 	totalHashes := 0
+	totalUploaded := int64(0)
+	totalHashed := int64(0)
 	for _, line := range text {
-		if strings.HasPrefix(line, "Time") {
+		if strings.HasPrefix(line, "Bytes") {
+			tokens := strings.Split(line, " ")
+			switch tokens[1] {
+			case "Uploaded:":
+				uploaded, err := strconv.ParseInt(tokens[2], 10, 64)
+				if err != nil {
+					log.Fatalf("Error parsing bytes uploaded: %v", err)
+				}
+				totalUploaded += uploaded
+				break
+			case "Hashed:":
+				hashed, err := strconv.ParseInt(tokens[2], 10, 64)
+				if err != nil {
+					log.Fatalf("Error parsing bytes hashed: %v", err)
+				}
+				totalHashed += hashed
+				break
+			}
+
+		} else if strings.HasPrefix(line, "Time") {
 			tokens := strings.Split(line, " ")
 			switch tokens[1] {
 			case "Hashing:":
@@ -144,5 +165,6 @@ func main() {
 		log.Fatalf("Error parsing duration: %v", err)
 	}
 	fmt.Printf("Client:\nHash time: %v\nUpload Time: %v\nFind Missing Time: %v\n", hashTime, uploadTime, findMissingTime)
+	fmt.Printf("Bytes Hashed: %v\nBytes Uploaded: %v\n", totalHashed, totalUploaded)
 	fmt.Printf("Server:\nExecute time: %v\nUpload Time: %v\n", executeTime, uploadTimeServer)
 }
