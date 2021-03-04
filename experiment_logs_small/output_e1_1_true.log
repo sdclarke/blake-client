@@ -6,19 +6,20 @@ INFO: Found 1 target...
 [0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
 Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
   bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher
-INFO: Elapsed time: 0.079s, Critical Path: 0.00s
+INFO: Elapsed time: 0.081s, Critical Path: 0.00s
 INFO: 0 processes.
 INFO: Build completed successfully, 1 total action
 INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher -a localhost:8980 -d /home/scott/buildbarn/blake-client/experiments/e1 -c 1 '-b=true'
 INFO: Build completed successfully, 1 total action
-2021/02/03 15:28:37 Hash: B3Z:f0662e5527ac19f23b9f697db09eb6971049101a1907538212a830d7cd206061
-2021/02/03 15:28:37 Hash: B3Z:d6fd9de5bccf223f523b316c9cd1cf9a9d87ea42473d68e011dad13f09bf8917
-2021/02/03 15:28:37 Hash: B3Z:d13c33ab66afaf85997bf7b7bb29609c3b4c3e311b259a23cb6e5eb8972da3b7
-2021/02/03 15:28:37 Hash: B3Z:95f1a8b8421e32df87826aa0d29f40b20c295a3f603de6d2533dc0d717f40852
-2021/02/03 15:28:37 Hash: B3Z:d4d5c5687568396951dd434a2f2b560013e3750cb2f16b696ee6d3ef9f659886
-2021/02/03 15:28:37 Action Digest: [212 213 197 104 117 104 57 105 81 221 67 74 47 43 86 0 19 227 117 12 178 241 107 105 110 230 211 239 159 101 152 134] d4d5c5687568396951dd434a2f2b560013e3750cb2f16b696ee6d3ef9f659886  76
-2021/02/03 15:28:37 Bytes Uploaded: 108
-2021/02/03 15:28:37 Time Hashing: 46.489µs
-2021/02/03 15:28:37 Time Uploading: 971.854µs
-2021/02/03 15:28:37 Time Finding Missing Blobs: 1.094061ms
-2021/02/03 15:28:37 Execute response: result:<output_files:<path:"out" digest:<size_bytes:2048 hash_blake3zcc:"A\307\226\3423h/\270[\221\366a\020%\257\224cN\323!i\r\256h\004\333]\005\307t\244\252" > > execution_metadata:<worker:"{\"datacenter\":\"paris\",\"hostname\":\"ubuntu-worker.example.com\",\"rack\":\"4\",\"slot\":\"15\",\"thread\":\"2\"}" queued_timestamp:<seconds:1612366117 nanos:132100056 > worker_start_timestamp:<seconds:1612366117 nanos:132319259 > worker_completed_timestamp:<seconds:1612366117 nanos:135769647 > input_fetch_start_timestamp:<seconds:1612366117 nanos:132429124 > input_fetch_completed_timestamp:<seconds:1612366117 nanos:132504273 > execution_start_timestamp:<seconds:1612366117 nanos:132504273 > execution_completed_timestamp:<seconds:1612366117 nanos:134618046 > output_upload_start_timestamp:<seconds:1612366117 nanos:134618046 > output_upload_completed_timestamp:<seconds:1612366117 nanos:135769647 > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.POSIXResourceUsage" value:"\n\004\020\300\215:\022\000\030\200\200\262\t8\207\001@\002PXX\010x\005\200\001\005" > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.FilePoolResourceUsage" > > > message:"Action details (cached result): /action/blake-client/B3Z:d4d5c5687568396951dd434a2f2b560013e3750cb2f16b696ee6d3ef9f659886/76/" 
+2021/02/19 16:19:51 Hash: B3Z:f0662e5527ac19f23b9f697db09eb6971049101a1907538212a830d7cd206061
+2021/02/19 16:19:51 Hash: B3Z:d6fd9de5bccf223f523b316c9cd1cf9a9d87ea42473d68e011dad13f09bf8917
+2021/02/19 16:19:51 Hash: B3Z:d13c33ab66afaf85997bf7b7bb29609c3b4c3e311b259a23cb6e5eb8972da3b7
+2021/02/19 16:19:51 Hash: B3Z:95f1a8b8421e32df87826aa0d29f40b20c295a3f603de6d2533dc0d717f40852
+2021/02/19 16:19:51 Hash: B3Z:d4d5c5687568396951dd434a2f2b560013e3750cb2f16b696ee6d3ef9f659886
+2021/02/19 16:19:51 Action Digest: [212 213 197 104 117 104 57 105 81 221 67 74 47 43 86 0 19 227 117 12 178 241 107 105 110 230 211 239 159 101 152 134] d4d5c5687568396951dd434a2f2b560013e3750cb2f16b696ee6d3ef9f659886  76
+2021/02/19 16:19:51 Bytes Uploaded: 108
+2021/02/19 16:19:51 Bytes Hashed: 2760
+2021/02/19 16:19:51 Time Hashing: 25.123µs
+2021/02/19 16:19:51 Time Uploading: 924.566µs
+2021/02/19 16:19:51 Time Finding Missing Blobs: 815.438µs
+2021/02/19 16:19:51 Error receiving results: rpc error: code = Unavailable desc = No workers exist for instance "blake-client" platform {}

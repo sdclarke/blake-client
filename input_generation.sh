@@ -232,6 +232,31 @@ case $size in
     dd if=/dev/zero of=in0 bs=$((275*1024*1024+1)) count=1
     dd if=/dev/zero of=in1 bs=$((265*1024*1024)) count=1
     ;;
+  huge_single)
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=200
+    cd ../e2
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=250
+    cd ../e3
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=300
+    cd ../e4
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=350
+    cd ../e5
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=400
+    cd ../e6
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=450
+    cd ../e7
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=500
+    cd ../e8
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=550
+    cd ../e9
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=600
+    cd ../e10
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=650
+    cd ../e11
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=700
+    cd ../e12
+    dd if=/dev/zero of=in0 bs=$((1024*1024)) count=750
+    ;;
   docker)
     docker save ubuntu:0 > in0
     cd ../e2

@@ -6,20 +6,21 @@ INFO: Found 1 target...
 [0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
 Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
   bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher
-INFO: Elapsed time: 0.065s, Critical Path: 0.00s
+INFO: Elapsed time: 0.094s, Critical Path: 0.00s
 INFO: 0 processes.
 INFO: Build completed successfully, 1 total action
 INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher -a localhost:8980 -d /home/scott/buildbarn/blake-client/experiments/e7 -c 4 '-b=true'
 INFO: Build completed successfully, 1 total action
-2021/02/03 16:14:23 Hash: B3Z:49bbc11948ed7d3139ce8ed12aa5a5a2759cf56028a869905df051c928660163
-2021/02/03 16:14:23 Hash: B3Z:fe4c60b847526e49dd8cf50a57897070d4c153fefb2d0549907275a491d3df89
-2021/02/03 16:14:23 Hash: B3Z:4739f653e0dab223f6be0aeb3f9dfb582ffef5b84da322a3fff00f22a7802c93
-2021/02/03 16:14:23 Command: arguments:"sh" arguments:"-c" arguments:"cp in0 out && printf ' ' | dd of=out bs=1 count=1 seek=26214400 conv=notrunc" output_paths:"out" 
-2021/02/03 16:14:23 Hash: B3Z:cd3205ee325b6700781efdfcede858fe751c6744693553be81a4f2d66ea467eb
-2021/02/03 16:14:23 Hash: B3Z:f5b1e193976019e1d74e9ac5ddaba1b9e006f13264785ec09b287aa36dbbb9ae
-2021/02/03 16:14:23 Action Digest: [245 177 225 147 151 96 25 225 215 78 154 197 221 171 161 185 224 6 241 50 100 120 94 192 155 40 122 163 109 187 185 174] f5b1e193976019e1d74e9ac5ddaba1b9e006f13264785ec09b287aa36dbbb9ae  76
-2021/02/03 16:14:23 Bytes Uploaded: 167
-2021/02/03 16:14:23 Time Hashing: 178.987458ms
-2021/02/03 16:14:23 Time Uploading: 2.091953ms
-2021/02/03 16:14:23 Time Finding Missing Blobs: 17.605875ms
-2021/02/03 16:14:24 Execute response: result:<output_files:<path:"out" digest:<size_bytes:52428801 hash_blake3zcc:"Y\311Snd\nF1y\332\344\216\364\257!r\313\273\2250\226\355\031\257\323[\\j\"\324&\263" > > stderr_digest:<size_bytes:70 hash_blake3zcc:"c\351\346\350=\310\225y:\220\017\016%qiU}\016\013\341\210\214\214\007\3569w\300o\272\030\310" > execution_metadata:<worker:"{\"datacenter\":\"paris\",\"hostname\":\"ubuntu-worker.example.com\",\"rack\":\"4\",\"slot\":\"15\",\"thread\":\"1\"}" queued_timestamp:<seconds:1612368863 nanos:601156829 > worker_start_timestamp:<seconds:1612368863 nanos:601415835 > worker_completed_timestamp:<seconds:1612368864 nanos:13382328 > input_fetch_start_timestamp:<seconds:1612368863 nanos:601525283 > input_fetch_completed_timestamp:<seconds:1612368863 nanos:601602386 > execution_start_timestamp:<seconds:1612368863 nanos:601602386 > execution_completed_timestamp:<seconds:1612368863 nanos:632146423 > output_upload_start_timestamp:<seconds:1612368863 nanos:632146423 > output_upload_completed_timestamp:<seconds:1612368864 nanos:13382328 > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.POSIXResourceUsage" value:"\n\004\020\350\276A\022\005\020\310\270\345\r\030\200\200\211\n8\306\002X\220\240\006x\006\200\001\003" > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.FilePoolResourceUsage" > > > message:"Action details (cached result): /action/blake-client/B3Z:f5b1e193976019e1d74e9ac5ddaba1b9e006f13264785ec09b287aa36dbbb9ae/76/" 
+2021/02/19 16:25:09 Hash: B3Z:49bbc11948ed7d3139ce8ed12aa5a5a2759cf56028a869905df051c928660163
+2021/02/19 16:25:10 Hash: B3Z:fe4c60b847526e49dd8cf50a57897070d4c153fefb2d0549907275a491d3df89
+2021/02/19 16:25:10 Hash: B3Z:4739f653e0dab223f6be0aeb3f9dfb582ffef5b84da322a3fff00f22a7802c93
+2021/02/19 16:25:10 Command: arguments:"sh" arguments:"-c" arguments:"cp in0 out && printf ' ' | dd of=out bs=1 count=1 seek=26214400 conv=notrunc" output_paths:"out" 
+2021/02/19 16:25:10 Hash: B3Z:cd3205ee325b6700781efdfcede858fe751c6744693553be81a4f2d66ea467eb
+2021/02/19 16:25:10 Hash: B3Z:f5b1e193976019e1d74e9ac5ddaba1b9e006f13264785ec09b287aa36dbbb9ae
+2021/02/19 16:25:10 Action Digest: [245 177 225 147 151 96 25 225 215 78 154 197 221 171 161 185 224 6 241 50 100 120 94 192 155 40 122 163 109 187 185 174] f5b1e193976019e1d74e9ac5ddaba1b9e006f13264785ec09b287aa36dbbb9ae  76
+2021/02/19 16:25:10 Bytes Uploaded: 167
+2021/02/19 16:25:10 Bytes Hashed: 88080648
+2021/02/19 16:25:10 Time Hashing: 203.165611ms
+2021/02/19 16:25:10 Time Uploading: 856.477µs
+2021/02/19 16:25:10 Time Finding Missing Blobs: 21.102366ms
+2021/02/19 16:25:10 Execute response: result:<output_files:<path:"out" digest:<size_bytes:52428801 hash_blake3zcc:"Y\311Snd\nF1y\332\344\216\364\257!r\313\273\2250\226\355\031\257\323[\\j\"\324&\263" > > stderr_digest:<size_bytes:70 hash_blake3zcc:"L\033]\374\316\"\033C\267Vj\240\334\371Ar\214\025\261\230Wm\351\0201\363'W\344\234\210:" > execution_metadata:<worker:"{\"datacenter\":\"paris\",\"hostname\":\"ubuntu-worker.example.com\",\"rack\":\"4\",\"slot\":\"15\",\"thread\":\"4\"}" queued_timestamp:<seconds:1613751910 nanos:158113856 > worker_start_timestamp:<seconds:1613751910 nanos:158384203 > worker_completed_timestamp:<seconds:1613751910 nanos:544911547 > input_fetch_start_timestamp:<seconds:1613751910 nanos:158491109 > input_fetch_completed_timestamp:<seconds:1613751910 nanos:158576112 > execution_start_timestamp:<seconds:1613751910 nanos:158576112 > execution_completed_timestamp:<seconds:1613751910 nanos:187532868 > output_upload_start_timestamp:<seconds:1613751910 nanos:187532868 > output_upload_completed_timestamp:<seconds:1613751910 nanos:544911547 > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.POSIXResourceUsage" value:"\n\004\020\220\363G\022\005\020\350\360\266\014\030\200\340\354\t8\300\002X\220\240\006x\007\200\001\010" > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.FilePoolResourceUsage" > > > message:"Action details (cached result): /action/blake-client/B3Z:f5b1e193976019e1d74e9ac5ddaba1b9e006f13264785ec09b287aa36dbbb9ae/76/" 
