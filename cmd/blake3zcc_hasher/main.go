@@ -130,15 +130,16 @@ func main() {
 		log.Fatalf("Error uploading action: %v", err)
 	}
 
+	hashingDuration, err := time.ParseDuration(fmt.Sprintf("%dns", blobUploader.GetTimeHashing()))
+	if err != nil {
+		log.Fatalf("Error parsing duration: %v", err)
+	}
+	log.Printf("Time Hashing: %v", hashingDuration)
 	err = finaliser(ctx)
 	if err != nil {
 		log.Fatalf("Error finalising blob uploads %v", err)
 	}
 	log.Printf("Action Digest: %v %v %v %d", actionDigest.GetHashBlake3Zcc(), hex.EncodeToString(actionDigest.GetHashBlake3Zcc()), actionDigest.GetHashOther(), actionDigest.GetSizeBytes())
-	hashingDuration, err := time.ParseDuration(fmt.Sprintf("%dns", blobUploader.GetTimeHashing()))
-	if err != nil {
-		log.Fatalf("Error parsing duration: %v", err)
-	}
 	uploadingDuration, err := time.ParseDuration(fmt.Sprintf("%dns", blobUploader.GetTimeUploading()))
 	if err != nil {
 		log.Fatalf("Error parsing duration: %v", err)
@@ -148,7 +149,7 @@ func main() {
 		log.Fatalf("Error parsing duration: %v", err)
 	}
 	log.Printf("Bytes Uploaded: %v", blobUploader.GetBytesUploaded())
-	log.Printf("Time Hashing: %v", hashingDuration)
+	log.Printf("Bytes Hashed: %v", blobUploader.GetBytesHashed())
 	log.Printf("Time Uploading: %v", uploadingDuration)
 	log.Printf("Time Finding Missing Blobs: %v", findingMissingDuration)
 

@@ -38,6 +38,7 @@ type blobUploader struct {
 	hash               hash.Hash
 	blake              bool
 	bytesUploaded      int64
+	bytesHashed        int64
 	timeHashing        int64
 	timeUploading      int64
 	timeFindingMissing int64
@@ -60,6 +61,10 @@ func NewBlobUploader(conn grpc.ClientConnInterface, instanceName string, maxSize
 
 func (bu *blobUploader) GetBytesUploaded() int64 {
 	return bu.bytesUploaded
+}
+
+func (bu *blobUploader) GetBytesHashed() int64 {
+	return bu.bytesHashed
 }
 
 func (bu *blobUploader) GetTimeHashing() int64 {
@@ -240,6 +245,7 @@ func (bu *blobUploader) createFileNode(ctx context.Context, fileName string) (*r
 	if stat.IsDir() {
 		return nil, status.Error(codes.InvalidArgument, "File is a directory")
 	}
+	bu.bytesHashed += stat.Size()
 
 	bu.hash.Reset()
 
@@ -285,6 +291,7 @@ func (bu *blobUploader) protoToDigest(m proto.Message) (*remoteexecution.Digest,
 	if err != nil {
 		return nil, nil, err
 	}
+	bu.bytesHashed += int64(len(bytes))
 	bu.hash.Reset()
 	timeBefore := time.Now().UnixNano()
 	_, err = bu.hash.Write(bytes)
