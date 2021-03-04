@@ -1,0 +1,6 @@
+Bytes Uploaded: 173
+Time Hashing: 46.893764ms
+Time Uploading: 1.534801ms
+Time Finding Missing Blobs: 1.041603ms
+Execute: 1612368915s502570381 1612368915s515941838
+Upload: 1612368915s515941838 1612368915s694722438

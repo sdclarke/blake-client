@@ -13,6 +13,11 @@ then
 fi
 for e in experiments/*
 do
+  if [ $size == "huge_single" ]
+  then
+    bazel run --override_repository=com_github_buildbarn_bb_storage=/home/scott/buildbarn/bb-storage //cmd/blake3zcc_hasher:blake3zcc_hasher -- -a localhost:8980 -d /home/scott/buildbarn/blake-client/$e -c 0 -b=${blake} 2> experiment_logs_${size}/output_${e: 12}_0_${blake}.log
+    continue
+  fi
   for c in {0..4}
   do
     if [ $c -lt 2 -o $c -gt 3 ]
