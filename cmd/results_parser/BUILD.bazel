@@ -1,7 +1,7 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
-    name = "go_default_library",
+    name = "results_parser_lib",
     srcs = ["main.go"],
     importpath = "github.com/sdclarke/blake-client/cmd/results_parser",
     visibility = ["//visibility:private"],
@@ -9,6 +9,6 @@ go_library(
 
 go_binary(
     name = "results_parser",
-    embed = [":go_default_library"],
+    embed = [":results_parser_lib"],
     visibility = ["//visibility:public"],
 )

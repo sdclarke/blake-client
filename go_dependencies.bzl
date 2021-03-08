@@ -14,8 +14,8 @@ def go_dependencies():
             "@com_github_buildbarn_bb_storage//:patches/com_github_bazelbuild_remote_apis/blake3.diff",
             "@com_github_buildbarn_bb_storage//:patches/com_github_bazelbuild_remote_apis/golang.diff",
         ],
-        sum = "h1:in8ww8rHwdcmLN3J9atiRDvAaYHobXBJzp7uAxlUREU=",
-        version = "v0.0.0-20201030192148-aa8e718768c2",
+        sum = "h1:/EMHYfINZDLrrr4f72+MxCYvmJ9EYcL8PYbQFHrnm38=",
+        version = "v0.0.0-20201209220655-9e72daff42c9",
     )
     go_repository(
         name = "com_github_beorn7_perks",
@@ -196,10 +196,11 @@ def go_dependencies():
     )
     go_repository(
         name = "com_github_google_go_jsonnet",
+        build_file_generation = "on",
         importpath = "github.com/google/go-jsonnet",
         patches = ["@com_github_buildbarn_bb_storage//:patches/com_github_google_go_jsonnet/astgen.diff"],
-        sum = "h1:Nb4EEOp+rdeGGyB1rQ5eisgSAqrTnhf9ip+X6lzZbY0=",
-        version = "v0.16.0",
+        sum = "h1:/9NIEfhK1NQRKl3sP2536b2+x5HnZMdql7x3yK/l8JY=",
+        version = "v0.17.0",
     )
     go_repository(
         name = "com_github_fatih_color",
@@ -229,8 +230,8 @@ def go_dependencies():
         name = "org_golang_google_grpc",
         build_file_proto_mode = "disable",
         importpath = "google.golang.org/grpc",
-        sum = "h1:T7P4R73V3SSDPhH7WW7ATbfViLtmamH0DKrP3f9AuDI=",
-        version = "v1.31.0",
+        sum = "h1:TwIQcH3es+MojMVojxxfQ3l3OF2KzlRxML2xZq0kRo8=",
+        version = "v1.35.0",
     )
     go_repository(
         name = "com_github_gordonklaus_ineffassign",
