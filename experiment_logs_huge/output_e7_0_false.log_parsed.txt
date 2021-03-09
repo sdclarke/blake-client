@@ -1,1 +1,0 @@
-Time Hashing: 2.707274376s

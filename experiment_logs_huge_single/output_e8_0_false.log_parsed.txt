@@ -1,0 +1,2 @@
+Bytes Hashed: 576717040
+Time Hashing: 2.5848028s

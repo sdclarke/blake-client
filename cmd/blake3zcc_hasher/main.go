@@ -135,6 +135,7 @@ func main() {
 		log.Fatalf("Error parsing duration: %v", err)
 	}
 	log.Printf("Time Hashing: %v", hashingDuration)
+	log.Printf("Bytes Hashed: %v", blobUploader.GetBytesHashed())
 	err = finaliser(ctx)
 	if err != nil {
 		log.Fatalf("Error finalising blob uploads %v", err)
@@ -149,7 +150,6 @@ func main() {
 		log.Fatalf("Error parsing duration: %v", err)
 	}
 	log.Printf("Bytes Uploaded: %v", blobUploader.GetBytesUploaded())
-	log.Printf("Bytes Hashed: %v", blobUploader.GetBytesHashed())
 	log.Printf("Time Uploading: %v", uploadingDuration)
 	log.Printf("Time Finding Missing Blobs: %v", findingMissingDuration)
 

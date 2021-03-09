@@ -5,22 +5,22 @@ INFO: Analyzed target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded
 INFO: Found 1 target...
 [0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
 Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
-  bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher
-INFO: Elapsed time: 0.096s, Critical Path: 0.00s
+  bazel-bin/cmd/blake3zcc_hasher/blake3zcc_hasher_/blake3zcc_hasher
+INFO: Elapsed time: 0.078s, Critical Path: 0.00s
 INFO: 0 processes.
 INFO: Build completed successfully, 1 total action
-INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/linux_amd64_stripped/blake3zcc_hasher -a localhost:8980 -d /home/scott/buildbarn/blake-client/experiments/e1 -c 4 '-b=true'
+INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/blake3zcc_hasher_/blake3zcc_hasher -a localhost:8980 -d /home/debian/blake-client/experiments/e1 -c 4 '-b=true'
 INFO: Build completed successfully, 1 total action
-2021/02/19 16:22:31 Hash: B3Z:ea42d17a30d3285566b173181682253f56bc3f9a4f495c20b10e5b3a877bca57
-2021/02/19 16:22:31 Hash: B3Z:78c1ca3f7e53f55b55b69a9b46a6469e6eea284f77d2ea2be907c5a623daf802
-2021/02/19 16:22:31 Hash: B3Z:ebe64fc71b020ad95d94187e1e4cc089a0c30f03226af28196fd200aba81a6bd
-2021/02/19 16:22:31 Command: arguments:"sh" arguments:"-c" arguments:"cp in0 out && printf ' ' | dd of=out bs=1 count=1 seek=20480 conv=notrunc" output_paths:"out" 
-2021/02/19 16:22:31 Hash: B3Z:17978dc41bdd1e16475529fb54e8f7fb3b5259592c62c9d4e12fe6618255fab8
-2021/02/19 16:22:31 Hash: B3Z:044589479f988a73bf114eca1f59e2cb9212cb5bd477d6e01874deba84f8ff65
-2021/02/19 16:22:31 Action Digest: [4 69 137 71 159 152 138 115 191 17 78 202 31 89 226 203 146 18 203 91 212 119 214 224 24 116 222 186 132 248 255 101] 044589479f988a73bf114eca1f59e2cb9212cb5bd477d6e01874deba84f8ff65  76
-2021/02/19 16:22:31 Bytes Uploaded: 164
-2021/02/19 16:22:31 Bytes Hashed: 205060
-2021/02/19 16:22:31 Time Hashing: 446.809µs
-2021/02/19 16:22:31 Time Uploading: 796.117µs
-2021/02/19 16:22:31 Time Finding Missing Blobs: 1.505584ms
-2021/02/19 16:22:32 Execute response: result:<output_files:<path:"out" digest:<size_bytes:40961 hash_blake3zcc:"\233P\357\2116t\306\317\0208\223t;\3268\334S\005\266\227\347\237>\006VY\177\202\241\370\t\027" > > stderr_digest:<size_bytes:70 hash_blake3zcc:"\003\025\356\377\225\331%\233\2525\ng\324\352G4oK7\036|\345E\353(\213B\203\354M_]" > execution_metadata:<worker:"{\"datacenter\":\"paris\",\"hostname\":\"ubuntu-worker.example.com\",\"rack\":\"4\",\"slot\":\"15\",\"thread\":\"6\"}" queued_timestamp:<seconds:1613751751 nanos:993324390 > worker_start_timestamp:<seconds:1613751751 nanos:993562762 > worker_completed_timestamp:<seconds:1613751751 nanos:997760073 > input_fetch_start_timestamp:<seconds:1613751751 nanos:993660441 > input_fetch_completed_timestamp:<seconds:1613751751 nanos:993732518 > execution_start_timestamp:<seconds:1613751751 nanos:993732518 > execution_completed_timestamp:<seconds:1613751751 nanos:995766370 > output_upload_start_timestamp:<seconds:1613751751 nanos:995766370 > output_upload_completed_timestamp:<seconds:1613751751 nanos:997760073 > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.POSIXResourceUsage" value:"\n\004\020\350\336`\022\000\030\200\340\364\t8\252\002X`x\006" > auxiliary_metadata:<type_url:"type.googleapis.com/buildbarn.resourceusage.FilePoolResourceUsage" > > > message:"Action details (cached result): /action/blake-client/B3Z:044589479f988a73bf114eca1f59e2cb9212cb5bd477d6e01874deba84f8ff65/76/" 
+2021/03/09 13:10:58 Hash: B3Z:ea42d17a30d3285566b173181682253f56bc3f9a4f495c20b10e5b3a877bca57
+2021/03/09 13:10:58 Hash: B3Z:78c1ca3f7e53f55b55b69a9b46a6469e6eea284f77d2ea2be907c5a623daf802
+2021/03/09 13:10:58 Hash: B3Z:ebe64fc71b020ad95d94187e1e4cc089a0c30f03226af28196fd200aba81a6bd
+2021/03/09 13:10:58 Command: arguments:"sh"  arguments:"-c"  arguments:"cp in0 out && printf ' ' | dd of=out bs=1 count=1 seek=20480 conv=notrunc"  output_paths:"out"
+2021/03/09 13:10:58 Hash: B3Z:17978dc41bdd1e16475529fb54e8f7fb3b5259592c62c9d4e12fe6618255fab8
+2021/03/09 13:10:58 Hash: B3Z:044589479f988a73bf114eca1f59e2cb9212cb5bd477d6e01874deba84f8ff65
+2021/03/09 13:10:58 Time Hashing: 445.058µs
+2021/03/09 13:10:58 Bytes Hashed: 205060
+2021/03/09 13:10:58 Action Digest: [4 69 137 71 159 152 138 115 191 17 78 202 31 89 226 203 146 18 203 91 212 119 214 224 24 116 222 186 132 248 255 101] 044589479f988a73bf114eca1f59e2cb9212cb5bd477d6e01874deba84f8ff65  76
+2021/03/09 13:10:58 Bytes Uploaded: 164
+2021/03/09 13:10:58 Time Uploading: 1.754433ms
+2021/03/09 13:10:58 Time Finding Missing Blobs: 3.923474ms
+2021/03/09 13:10:58 Execute response: result:{output_files:{path:"out"  digest:{size_bytes:40961  hash_blake3zcc:"\x9bP\xef\x896t\xc6\xcf\x108\x93t;\xd68\xdcS\x05\xb6\x97\xe7\x9f>\x06VY\x82\xa1\xf8\t\x17"}}  stderr_digest:{size_bytes:70  hash_blake3zcc:"G梜\xd2\xef͢\n\x91\xa1<\x825\xca#\x13\xa6*؅-\xe5\x9f\xdaOjp\x1d6j\xcc"}  execution_metadata:{worker:"{\"datacenter\":\"paris\",\"hostname\":\"ubuntu-worker.example.com\",\"rack\":\"4\",\"slot\":\"15\",\"thread\":\"7\"}"  queued_timestamp:{seconds:1615295458  nanos:172770306}  worker_start_timestamp:{seconds:1615295458  nanos:173143331}  worker_completed_timestamp:{seconds:1615295458  nanos:182983753}  input_fetch_start_timestamp:{seconds:1615295458  nanos:173394212}  input_fetch_completed_timestamp:{seconds:1615295458  nanos:175202097}  execution_start_timestamp:{seconds:1615295458  nanos:175202097}  execution_completed_timestamp:{seconds:1615295458  nanos:178253712}  output_upload_start_timestamp:{seconds:1615295458  nanos:178253712}  output_upload_completed_timestamp:{seconds:1615295458  nanos:182983753}  auxiliary_metadata:{type_url:"type.googleapis.com/buildbarn.resourceusage.POSIXResourceUsage"  value:"\n\x05\x10\x98ׇ\x01\x12\x00\x18\x80\x80\x8c\r8\xb7\x02X`x\x06\x80\x01\x08"}  auxiliary_metadata:{type_url:"type.googleapis.com/buildbarn.resourceusage.FilePoolResourceUsage"}}}  message:"Action details (cached result): /action/blake-client/B3Z:044589479f988a73bf114eca1f59e2cb9212cb5bd477d6e01874deba84f8ff65/76/"
