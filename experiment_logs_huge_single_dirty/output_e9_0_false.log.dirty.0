@@ -1,0 +1,20 @@
+Loading: 
+Loading: 0 packages loaded
+Analyzing: target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured)
+INFO: Analyzed target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+[0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
+Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
+  bazel-bin/cmd/blake3zcc_hasher/blake3zcc_hasher_/blake3zcc_hasher
+INFO: Elapsed time: 0.614s, Critical Path: 0.01s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/blake3zcc_hasher_/blake3zcc_hasher -a localhost:8980 -d /home/debian/blake-client/experiments/e9 -c 0 '-b=false'
+INFO: Build completed successfully, 1 total action
+2021/03/14 16:19:48 Hash: 987523e7780392e283b404990c4e84e580bc75c451138b0c86c4f81c296eeebe
+2021/03/14 16:19:48 Hash: cc0018fcfa6f23ed4c5fd4d9e027708de26bfd0053f68b816fe2f7c039c8b10a
+2021/03/14 16:19:48 Hash: a13e5774979b9aac00eace0526fcfa2a673226c22b649d685f3540cdc7b38f9c
+2021/03/14 16:19:48 Hash: e25e08f59c3e07598ca16a5f7ec816234ffd00af2ed66c50b897ddf875f02d13
+2021/03/14 16:19:48 Time Hashing: 3.436372975s
+2021/03/14 16:19:48 Bytes Hashed: 629145840
+2021/03/14 16:19:48 Error finalising blob uploads EOF
