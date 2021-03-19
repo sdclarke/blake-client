@@ -62,7 +62,6 @@ func main() {
 					log.Fatalf("Error parsing bytes hashed: %v", err)
 				}
 				totalHashed += hashed
-				totalRuns++
 				break
 			}
 
@@ -117,6 +116,7 @@ func main() {
 				}
 				executeEnd := time.Unix(executeEndSec, executeEndNSec)
 				cumulativeExecuteTime += (executeEnd.UnixNano() - executeStart.UnixNano())
+				totalRuns++
 				break
 			case "Upload:":
 				pieces := strings.Split(tokens[1], "s")
@@ -144,13 +144,14 @@ func main() {
 			}
 		}
 	}
+	log.Printf("Runs: %v, Hashes: %v", totalRuns, totalHashes)
 	hashTime, err := time.ParseDuration(fmt.Sprintf("%.0fns", float64(cumulativeHashTime)/float64(totalHashes)))
 	if err != nil {
 		log.Fatalf("Error parsing hash duration: %v, %v", float64(cumulativeHashTime)/float64(totalHashes), err)
 	}
 	totalHashTime, err := time.ParseDuration(fmt.Sprintf("%dns", cumulativeHashTime))
 	if err != nil {
-		log.Fatalf("Error parsing hash duration: %v, %v", float64(cumulativeHashTime)/float64(totalHashes), err)
+		log.Fatalf("Error parsing total hash duration: %v", err)
 	}
 	uploadTime, err := time.ParseDuration(fmt.Sprintf("%.0fns", float64(cumulativeUploadTime)/float64(totalRuns)))
 	if err != nil {
@@ -171,7 +172,7 @@ func main() {
 	fmt.Printf("Client:\nAverage Hash time: %v\nTotal Hash Time: %v\nUpload Time: %v\nFind Missing Time: %v\n", hashTime, totalHashTime, uploadTime, findMissingTime)
 	fmt.Printf("Bytes Hashed: %v\nBytes Uploaded: %v\n", totalHashed, totalUploaded)
 	var hashRate string
-	if rateOfHashing := float64(totalHashed) / (float64(cumulativeHashTime)/(1000*1000*1000)); rateOfHashing < 1024 {
+	if rateOfHashing := float64(totalHashed) / (float64(cumulativeHashTime) / (1000 * 1000 * 1000)); rateOfHashing < 1024 {
 		hashRate = fmt.Sprintf("%fB/s", rateOfHashing)
 	} else if rateOfHashing < 1024*1024 {
 		hashRate = fmt.Sprintf("%fkB/s", rateOfHashing/1024)
