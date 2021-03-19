@@ -1,0 +1,52 @@
+output_huge_single_dirty_true_0.txt
+Client:
+Average Hash time: 1.477394236s
+Total Hash Time: 17.72873083s
+Upload Time: 0s
+Find Missing Time: 112.46116ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 0
+Rate of Hashing: 321.512109MB/s
+Server:
+Execute time: 490.223563ms
+Upload Time: 3.880202505s
+
+output_huge_single_dirty_true_1.txt
+Client:
+Average Hash time: 1.593103104s
+Total Hash Time: 19.117237254s
+Upload Time: 0s
+Find Missing Time: 120.818876ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 0
+Rate of Hashing: 298.160324MB/s
+Server:
+Execute time: 542.081437ms
+Upload Time: 4.147024769s
+
+output_huge_single_dirty_true_2.txt
+Client:
+Average Hash time: 1.698220468s
+Total Hash Time: 20.378645612s
+Upload Time: 0s
+Find Missing Time: 122.905769ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 0
+Rate of Hashing: 279.704636MB/s
+Server:
+Execute time: 481.749443ms
+Upload Time: 4.370392017s
+
+output_huge_single_dirty_true_3.txt
+Client:
+Average Hash time: 1.613401011s
+Total Hash Time: 19.360812132s
+Upload Time: 0s
+Find Missing Time: 121.424993ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 0
+Rate of Hashing: 294.409222MB/s
+Server:
+Execute time: 611.315014ms
+Upload Time: 4.424975025s
+

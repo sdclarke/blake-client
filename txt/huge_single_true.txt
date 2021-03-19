@@ -1,0 +1,91 @@
+output_huge_single_true_0.txt
+Client:
+Average Hash time: 1.383664258s
+Total Hash Time: 16.6039711s
+Upload Time: 30.526404268s
+Find Missing Time: 5.356066ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 5976884717
+Rate of Hashing: 343.291470MB/s
+Server:
+Execute time: 546.975398ms
+Upload Time: 3.661267007s
+
+output_huge_single_true_1.txt
+Client:
+Average Hash time: 1.521184392s
+Total Hash Time: 18.254212702s
+Upload Time: 39.54504115s
+Find Missing Time: 16.98214ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 5976884717
+Rate of Hashing: 312.256778MB/s
+Server:
+Execute time: 699.978514ms
+Upload Time: 4.015226488s
+
+output_huge_single_true_2.txt
+Client:
+Average Hash time: 1.305378216s
+Total Hash Time: 15.664538595s
+Upload Time: 30.470264952s
+Find Missing Time: 10.32264ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 5976884717
+Rate of Hashing: 363.879320MB/s
+Server:
+Execute time: 691.728346ms
+Upload Time: 3.653889569s
+
+output_huge_single_true_3.txt
+Client:
+Average Hash time: 1.269891275s
+Total Hash Time: 15.238695297s
+Upload Time: 29.136397066s
+Find Missing Time: 9.46834ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 5976884717
+Rate of Hashing: 374.047878MB/s
+Server:
+Execute time: 556.410537ms
+Upload Time: 3.590859884s
+
+output_huge_single_true_4.txt
+Client:
+Average Hash time: 1.297752443s
+Total Hash Time: 15.573029316s
+Upload Time: 30.241670014s
+Find Missing Time: 11.664959ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 5976884717
+Rate of Hashing: 366.017525MB/s
+Server:
+Execute time: 657.555269ms
+Upload Time: 3.648367477s
+
+output_huge_single_true_5.txt
+Client:
+Average Hash time: 1.296009884s
+Total Hash Time: 15.552118605s
+Upload Time: 30.083359952s
+Find Missing Time: 11.037946ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 5976884717
+Rate of Hashing: 366.509656MB/s
+Server:
+Execute time: 564.985719ms
+Upload Time: 3.602068204s
+
+output_huge_single_true_6.txt
+Client:
+Average Hash time: 1.255251842s
+Total Hash Time: 15.063022099s
+Upload Time: 26.835533794s
+Find Missing Time: 7.898207ms
+Bytes Hashed: 5976884926
+Bytes Uploaded: 5976884717
+Rate of Hashing: 378.410229MB/s
+Server:
+Execute time: 618.516886ms
+Upload Time: 3.571996279s
+
