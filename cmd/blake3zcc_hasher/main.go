@@ -48,11 +48,12 @@ var (
 
 var blake bool
 
-func parseFlags() (string, string, int, bool) {
+func parseFlags() (string, string, int, bool, int) {
 	var address string
 	var inputRoot string
 	var commandNumber int
 	var decompose bool
+	var decomposeSize int
 
 	flag.StringVar(&address, "address", "", "Address of gRPC endpoint for Buildbarn frontend")
 	flag.StringVar(&address, "a", "", "Address of gRPC endpoint for Buildbarn frontend (shorthand)")
@@ -64,13 +65,15 @@ func parseFlags() (string, string, int, bool) {
 	flag.IntVar(&commandNumber, "c", 0, fmt.Sprintf("The number of the command to be run (0-%d)", len(commands)-1))
 	flag.BoolVar(&decompose, "decompose", false, "True to decompose locally when using BLAKE3ZCC")
 	flag.BoolVar(&decompose, "D", false, "True to decompose locally when using BLAKE3ZCC (shorthand)")
+	flag.IntVar(&decomposeSize, "decompose-size", 0, fmt.Sprintf("The size of blobs to decompose to in bytes"))
+	flag.IntVar(&decomposeSize, "s", 0, fmt.Sprintf("The size of blobs to decompose to in bytes (shorthand)"))
 	flag.Parse()
 
-	return address, inputRoot, commandNumber, decompose
+	return address, inputRoot, commandNumber, decompose, decomposeSize
 }
 
 func main() {
-	address, inputRoot, commandNumber, decompose := parseFlags()
+	address, inputRoot, commandNumber, decompose, decomposeSize := parseFlags()
 	if commandNumber >= len(commands) || commandNumber < 0 {
 		log.Fatalf("Command number is invalid, must be in range 0-%d", len(commands)-1)
 	}
@@ -97,40 +100,39 @@ func main() {
 		}
 		hash = d.NewHasher()
 	}
-	blobUploader, finaliser := blobuploader.NewBlobUploader(conn, instanceName, 100, hash, blake, decompose)
+	blobUploader, finaliser := blobuploader.NewBlobUploader(conn, instanceName, 100, hash, blake, decompose, decomposeSize)
 
 	inputRootDigest, err := blobUploader.UploadDirectory(ctx, inputRoot)
 	if err != nil {
 		log.Fatalf("Something went wrong uploading input root: %v", err)
 	}
 
-	if decompose {
-		commandNumber = 0
-	}
-	command := commands[commandNumber]
-	if commandNumber == 4 {
-		file, err := os.Open(path.Join(inputRoot, "in0"))
+	if !decompose {
+		command := commands[commandNumber]
+		if commandNumber == 4 {
+			file, err := os.Open(path.Join(inputRoot, "in0"))
+			if err != nil {
+				log.Fatalf("Error opening input file: %v", err)
+			}
+
+			stat, err := file.Stat()
+			if err != nil {
+				log.Fatalf("Error stating input file: %v", err)
+			}
+			file.Close()
+			command.Arguments[2] = fmt.Sprintf(command.Arguments[2], stat.Size()/2)
+			log.Printf("Command: %v", command)
+		}
+		commandDigest, err := blobUploader.AddProto(ctx, command)
 		if err != nil {
-			log.Fatalf("Error opening input file: %v", err)
+			log.Fatalf("Error uploading command: %v", err)
 		}
 
-		stat, err := file.Stat()
+		action := createAction(commandDigest, inputRootDigest)
+		actionDigest, err := blobUploader.AddProto(ctx, action)
 		if err != nil {
-			log.Fatalf("Error stating input file: %v", err)
+			log.Fatalf("Error uploading action: %v", err)
 		}
-		file.Close()
-		command.Arguments[2] = fmt.Sprintf(command.Arguments[2], stat.Size()/2)
-		log.Printf("Command: %v", command)
-	}
-	commandDigest, err := blobUploader.AddProto(ctx, command)
-	if err != nil {
-		log.Fatalf("Error uploading command: %v", err)
-	}
-
-	action := createAction(commandDigest, inputRootDigest)
-	actionDigest, err := blobUploader.AddProto(ctx, action)
-	if err != nil {
-		log.Fatalf("Error uploading action: %v", err)
 	}
 
 	hashingDuration, err := time.ParseDuration(fmt.Sprintf("%dns", blobUploader.GetTimeHashing()))
@@ -158,21 +160,23 @@ func main() {
 	log.Printf("Time Uploading: %v", uploadingDuration)
 	log.Printf("Time Finding Missing Blobs: %v", findingMissingDuration)
 
-	executionClient := remoteexecution.NewExecutionClient(conn)
+	if !decompose {
+		executionClient := remoteexecution.NewExecutionClient(conn)
 
-	stream, err := executionClient.Execute(ctx, &remoteexecution.ExecuteRequest{
-		InstanceName: instanceName.String(),
-		ActionDigest: actionDigest,
-	})
-	if err != nil {
-		log.Fatalf("Error calling Execute(): %v", err)
-	}
+		stream, err := executionClient.Execute(ctx, &remoteexecution.ExecuteRequest{
+			InstanceName: instanceName.String(),
+			ActionDigest: actionDigest,
+		})
+		if err != nil {
+			log.Fatalf("Error calling Execute(): %v", err)
+		}
 
-	executeResponse, err := receiveResults(stream)
-	if err != nil {
-		log.Fatalf("Error receiving results: %v", err)
+		executeResponse, err := receiveResults(stream)
+		if err != nil {
+			log.Fatalf("Error receiving results: %v", err)
+		}
+		log.Printf("Execute response: %v", executeResponse)
 	}
-	log.Printf("Execute response: %v", executeResponse)
 }
 
 func createAction(commandDigest, inputRootDigest *remoteexecution.Digest) *remoteexecution.Action {

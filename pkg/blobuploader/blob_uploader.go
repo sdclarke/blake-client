@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"hash"
 	"io"
-	"log"
 	"os"
 	"path"
 	"strings"
@@ -39,6 +38,7 @@ type blobUploader struct {
 	hash               hash.Hash
 	blake              bool
 	decompose          bool
+	decomposeSize      int64
 	bytesUploaded      int64
 	bytesHashed        int64
 	timeHashing        int64
@@ -48,7 +48,7 @@ type blobUploader struct {
 	totalBlobs         int64
 }
 
-func NewBlobUploader(conn grpc.ClientConnInterface, instanceName digest.InstanceName, maxSize int, hash hash.Hash, blake, decompose bool) (*blobUploader, func(context.Context) error) {
+func NewBlobUploader(conn grpc.ClientConnInterface, instanceName digest.InstanceName, maxSize int, hash hash.Hash, blake, decompose bool, decomposeSize int) (*blobUploader, func(context.Context) error) {
 	bu := &blobUploader{
 		bytestreamClient: bpb.NewByteStreamClient(conn),
 		casClient:        remoteexecution.NewContentAddressableStorageClient(conn),
@@ -58,6 +58,7 @@ func NewBlobUploader(conn grpc.ClientConnInterface, instanceName digest.Instance
 		hash:             hash,
 		blake:            blake,
 		decompose:        decompose,
+		decomposeSize:    int64(decomposeSize),
 	}
 	return bu, func(ctx context.Context) error {
 		return bu.findMissingAndUpload(ctx)
@@ -101,11 +102,11 @@ func (bu *blobUploader) add(ctx context.Context, digest *remoteexecution.Digest,
 			hash = fmt.Sprintf("B3ZM:%s", hex.EncodeToString(digest.GetHashBlake3ZccManifest()))
 		}
 	}
-	log.Printf("Hash: %v", hash)
+	//log.Printf("Hash: %v", hash)
+	bu.totalBlobs++
 	if _, ok := bu.blobs[hash]; ok {
 		return nil
 	}
-	bu.totalBlobs++
 	bu.blobs[hash] = &blob{digest: digest, b: b}
 	return nil
 }
@@ -142,7 +143,7 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 			if err != nil {
 				return err
 			}
-			if bbManifestDigest, manifestParser, ok := bbDigest.ToManifest(int64(8192)); ok {
+			if bbManifestDigest, manifestParser, ok := bbDigest.ToManifest(bu.decomposeSize); ok {
 				bu.totalBlobs--
 				manifestSize := bbManifestDigest.GetSizeBytes()
 				if manifestSize > (9 * 1024 * 1024) {
@@ -158,7 +159,7 @@ func (bu *blobUploader) findMissingAndUpload(ctx context.Context) error {
 					if len(data) == 0 {
 						break
 					}
-					block := make([]byte, 8192)
+					block := make([]byte, int(bu.decomposeSize))
 					n := copy(block, data)
 					data = data[n:]
 					block = block[:n]
