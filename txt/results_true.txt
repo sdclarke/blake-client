@@ -1,21 +1,9 @@
-output_huge_single_true.txt
-Client:
-Average Hash time: 1.383664258s
-Total Hash Time: 16.6039711s
-Upload Time: 30.526404268s
-Find Missing Time: 5.356066ms
-Bytes Hashed: 5976884926
-Bytes Uploaded: 5976884717
-Rate of Hashing: 343.291470MB/s
-Server:
-Execute time: 546.975398ms
-Upload Time: 3.661267007s
-
 output_huge_true.txt
 Client:
 Average Hash time: 1.69955775s
 Total Hash Time: 27.192924008s
 Upload Time: 10.794360465s
+Total Upload Time: 2m52.709767447s
 Find Missing Time: 103.316333ms
 Bytes Hashed: 11518610809
 Bytes Uploaded: 2810185808
@@ -23,12 +11,14 @@ Rate of Hashing: 403.965505MB/s
 Server:
 Execute time: 573.019646ms
 Upload Time: 3.730341079s
+Total Upload Time: 59.685457262s
 
 output_large_true.txt
 Client:
 Average Hash time: 122.335037ms
 Total Hash Time: 4.40406134s
 Upload Time: 379.379382ms
+Total Upload Time: 13.657657763s
 Find Missing Time: 14.010628ms
 Bytes Hashed: 2063605329
 Bytes Uploaded: 218108193
@@ -36,12 +26,14 @@ Rate of Hashing: 446.861942MB/s
 Server:
 Execute time: 28.209525ms
 Upload Time: 289.465567ms
+Total Upload Time: 10.420760396s
 
 output_medium_high_true.txt
 Client:
 Average Hash time: 4.728387ms
 Total Hash Time: 170.22192ms
 Upload Time: 8.997959ms
+Total Upload Time: 323.926531ms
 Find Missing Time: 4.387108ms
 Bytes Hashed: 77569568
 Bytes Uploaded: 4198659
@@ -49,12 +41,14 @@ Rate of Hashing: 434.586243MB/s
 Server:
 Execute time: 6.551384ms
 Upload Time: 10.911504ms
+Total Upload Time: 392.814148ms
 
 output_medium_true.txt
 Client:
 Average Hash time: 1.069365ms
 Total Hash Time: 38.497132ms
 Upload Time: 3.267327ms
+Total Upload Time: 117.623761ms
 Find Missing Time: 3.871163ms
 Bytes Hashed: 17702430
 Bytes Uploaded: 946433
@@ -62,12 +56,14 @@ Rate of Hashing: 438.535339MB/s
 Server:
 Execute time: 4.563502ms
 Upload Time: 3.344373ms
+Total Upload Time: 120.397421ms
 
 output_small_multi_true.txt
 Client:
 Average Hash time: 145.008µs
 Total Hash Time: 5.220272ms
 Upload Time: 1.928344ms
+Total Upload Time: 69.420397ms
 Find Missing Time: 2.884451ms
 Bytes Hashed: 1850855
 Bytes Uploaded: 102645
@@ -75,12 +71,14 @@ Rate of Hashing: 338.126610MB/s
 Server:
 Execute time: 3.478583ms
 Upload Time: 1.572274ms
+Total Upload Time: 56.601862ms
 
 output_small_true.txt
 Client:
 Average Hash time: 50.684µs
 Total Hash Time: 1.82463ms
 Upload Time: 1.479703ms
+Total Upload Time: 53.269308ms
 Find Missing Time: 1.727446ms
 Bytes Hashed: 359302
 Bytes Uploaded: 14557
@@ -88,4 +86,4 @@ Rate of Hashing: 187.795383MB/s
 Server:
 Execute time: 3.403211ms
 Upload Time: 1.245635ms
-
+Total Upload Time: 44.842855ms

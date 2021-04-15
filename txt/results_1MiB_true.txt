@@ -1,0 +1,90 @@
+output_huge_1MiB_.txt
+Client:
+Average Hash time: 1.881390778s
+Total Hash Time: 30.102252451s
+Upload Time: 2.960843934s
+Total Upload Time: 47.373502947s
+Find Missing Time: 5.84337ms
+Bytes Hashed: 11518610809
+Bytes Uploaded: 2810185808
+Rate of Hashing: 364.922967MB/s
+Server:
+Execute time: 713.385367ms
+Upload Time: 3.720166882s
+Total Upload Time: 59.522670104s
+
+output_large_1MiB_.txt
+Client:
+Average Hash time: 125.312912ms
+Total Hash Time: 4.511264823s
+Upload Time: 101.053175ms
+Total Upload Time: 3.637914285s
+Find Missing Time: 3.837264ms
+Bytes Hashed: 2063605329
+Bytes Uploaded: 218108193
+Rate of Hashing: 436.242934MB/s
+Server:
+Execute time: 29.159654ms
+Upload Time: 285.925079ms
+Total Upload Time: 10.293302827s
+
+output_medium_1MiB_.txt
+Client:
+Average Hash time: 1.179494ms
+Total Hash Time: 42.461778ms
+Upload Time: 2.34197ms
+Total Upload Time: 84.310908ms
+Find Missing Time: 1.832767ms
+Bytes Hashed: 17702430
+Bytes Uploaded: 946433
+Rate of Hashing: 397.589400MB/s
+Server:
+Execute time: 4.37999ms
+Upload Time: 3.761437ms
+Total Upload Time: 135.411722ms
+
+output_medium_high_1MiB_.txt
+Client:
+Average Hash time: 5.171834ms
+Total Hash Time: 186.186018ms
+Upload Time: 4.516203ms
+Total Upload Time: 162.583304ms
+Find Missing Time: 3.485367ms
+Bytes Hashed: 77569568
+Bytes Uploaded: 4198659
+Rate of Hashing: 397.323631MB/s
+Server:
+Execute time: 6.4758ms
+Upload Time: 13.850998ms
+Total Upload Time: 498.635915ms
+
+output_small_1MiB_.txt
+Client:
+Average Hash time: 63.241µs
+Total Hash Time: 2.276667ms
+Upload Time: 1.818488ms
+Total Upload Time: 65.465566ms
+Find Missing Time: 2.200929ms
+Bytes Hashed: 359302
+Bytes Uploaded: 22749
+Rate of Hashing: 150.508216MB/s
+Server:
+Execute time: 4.718932ms
+Upload Time: 1.864033ms
+Total Upload Time: 67.105201ms
+
+output_small_multi_1MiB_.txt
+Client:
+Average Hash time: 142.691µs
+Total Hash Time: 5.136863ms
+Upload Time: 1.974508ms
+Total Upload Time: 71.08228ms
+Find Missing Time: 2.339567ms
+Bytes Hashed: 1850855
+Bytes Uploaded: 102645
+Rate of Hashing: 343.616888MB/s
+Server:
+Execute time: 3.691635ms
+Upload Time: 1.743062ms
+Total Upload Time: 62.750244ms
+

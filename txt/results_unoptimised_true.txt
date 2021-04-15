@@ -1,0 +1,90 @@
+output_huge_unoptimised_true.txt
+Client:
+Average Hash time: 3.093464315s
+Total Hash Time: 49.495429038s
+Upload Time: 10.533294094s
+Total Upload Time: 2m48.532705507s
+Find Missing Time: 135.559158ms
+Bytes Hashed: 11518610809
+Bytes Uploaded: 2810185808
+Rate of Hashing: 221.939753MB/s
+Server:
+Execute time: 1.155308358s
+Upload Time: 6.719232625s
+Total Upload Time: 1m47.507721999s
+
+output_large_unoptimised_true.txt
+Client:
+Average Hash time: 238.183082ms
+Total Hash Time: 8.574590935s
+Upload Time: 404.270771ms
+Total Upload Time: 14.553747771s
+Find Missing Time: 17.421792ms
+Bytes Hashed: 2063605329
+Bytes Uploaded: 218108193
+Rate of Hashing: 229.516185MB/s
+Server:
+Execute time: 26.174785ms
+Upload Time: 530.975765ms
+Total Upload Time: 19.115127532s
+
+output_medium_high_unoptimised_true.txt
+Client:
+Average Hash time: 9.238322ms
+Total Hash Time: 332.579595ms
+Upload Time: 9.088742ms
+Total Upload Time: 327.19473ms
+Find Missing Time: 3.287595ms
+Bytes Hashed: 77569568
+Bytes Uploaded: 4198659
+Rate of Hashing: 222.431279MB/s
+Server:
+Execute time: 6.624516ms
+Upload Time: 19.900639ms
+Total Upload Time: 716.422995ms
+
+output_medium_unoptimised_true.txt
+Client:
+Average Hash time: 2.159888ms
+Total Hash Time: 77.755952ms
+Upload Time: 3.510913ms
+Total Upload Time: 126.392862ms
+Find Missing Time: 2.900771ms
+Bytes Hashed: 17702430
+Bytes Uploaded: 946433
+Rate of Hashing: 217.119750MB/s
+Server:
+Execute time: 5.027796ms
+Upload Time: 4.479831ms
+Total Upload Time: 161.273932ms
+
+output_small_multi_unoptimised_true.txt
+Client:
+Average Hash time: 245.888µs
+Total Hash Time: 8.851981ms
+Upload Time: 1.906127ms
+Total Upload Time: 68.620567ms
+Find Missing Time: 2.764399ms
+Bytes Hashed: 1850855
+Bytes Uploaded: 102645
+Rate of Hashing: 199.403148MB/s
+Server:
+Execute time: 3.739629ms
+Upload Time: 1.676052ms
+Total Upload Time: 60.337871ms
+
+output_small_unoptimised_true.txt
+Client:
+Average Hash time: 74.071µs
+Total Hash Time: 2.666543ms
+Upload Time: 1.455007ms
+Total Upload Time: 52.380239ms
+Find Missing Time: 1.617735ms
+Bytes Hashed: 359302
+Bytes Uploaded: 14557
+Rate of Hashing: 128.502368MB/s
+Server:
+Execute time: 4.064442ms
+Upload Time: 1.246051ms
+Total Upload Time: 44.85784ms
+
