@@ -1,8 +1,0 @@
-454656  storage-cas-0
-409600  storage-cas-1
-466944  storage-cas-0
-413696  storage-cas-1
-458752  storage-cas-0
-413696  storage-cas-1
-471040  storage-cas-0
-417792  storage-cas-1

@@ -11,30 +11,47 @@ import (
 	"time"
 )
 
-func parseFlags() string {
+func parseFlags() (string, bool) {
 	var file string
+	var edit bool
 
 	flag.StringVar(&file, "file", "", "File from which to parse results")
 	flag.StringVar(&file, "f", "", "File from which to parse results")
+	flag.BoolVar(&edit, "i", false, "Add parsed durations for server metrics to input file")
 	flag.Parse()
 
-	return file
+	return file, edit
 }
 
 func main() {
-	fileName := parseFlags()
-	f, err := os.Open(fileName)
-	if err != nil {
-		log.Fatalf("Error opening file: %v", err)
+	fileName, edit := parseFlags()
+	var scanner *bufio.Scanner
+	var f *os.File
+	var err error
+	if edit {
+		f, err = os.OpenFile(fileName, os.O_APPEND|os.O_RDWR, 0644)
+		if err != nil {
+			log.Fatalf("Error opening file: %v", err)
+		}
+		scanner = bufio.NewScanner(f)
+	} else {
+		f, err = os.Open(fileName)
+		if err != nil {
+			log.Fatalf("Error opening file: %v", err)
+		}
+		scanner = bufio.NewScanner(f)
 	}
-	scanner := bufio.NewScanner(f)
 
 	scanner.Split(bufio.ScanLines)
 	text := []string{}
 	for scanner.Scan() {
 		text = append(text, scanner.Text())
 	}
-	f.Close()
+	if !edit {
+		f.Close()
+	} else {
+		defer f.Close()
+	}
 
 	cumulativeHashTime := int64(0)
 	cumulativeUploadTime := int64(0)
@@ -45,6 +62,7 @@ func main() {
 	totalHashes := 0
 	totalUploaded := int64(0)
 	totalHashed := int64(0)
+	updatedText := []string{}
 	for _, line := range text {
 		if strings.HasPrefix(line, "Bytes") {
 			tokens := strings.Split(line, " ")
@@ -140,6 +158,13 @@ func main() {
 				}
 				uploadEnd := time.Unix(uploadEndSec, uploadEndNSec)
 				cumulativeUploadTimeServer += (uploadEnd.UnixNano() - uploadStart.UnixNano())
+				if edit {
+					uploadTimeServer, err := time.ParseDuration(fmt.Sprintf("%dns", uploadEnd.UnixNano()-uploadStart.UnixNano()))
+					if err != nil {
+						log.Fatalf("Error parsing server upload duration: %v", err)
+					}
+					updatedText = append(updatedText, fmt.Sprintf("Upload Duration: %v", uploadTimeServer))
+				}
 				break
 			}
 		}
@@ -157,6 +182,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error parsing upload duration: %v, %v", float64(totalRuns), err)
 	}
+	totalUploadTime, err := time.ParseDuration(fmt.Sprintf("%dns", cumulativeUploadTime))
+	if err != nil {
+		log.Fatalf("Error parsing upload duration: %v, %v", float64(totalRuns), err)
+	}
 	findMissingTime, err := time.ParseDuration(fmt.Sprintf("%.0fns", float64(cumulativeFindMissingTime)/float64(totalRuns)))
 	if err != nil {
 		log.Fatalf("Error parsing find missing duration: %v, %v", float64(cumulativeFindMissingTime)/float64(totalRuns), err)
@@ -169,7 +198,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error parsing server upload duration: %v, %v", float64(cumulativeUploadTimeServer)/float64(totalRuns), err)
 	}
-	fmt.Printf("Client:\nAverage Hash time: %v\nTotal Hash Time: %v\nUpload Time: %v\nFind Missing Time: %v\n", hashTime, totalHashTime, uploadTime, findMissingTime)
+	totalUploadTimeServer, err := time.ParseDuration(fmt.Sprintf("%dns", cumulativeUploadTimeServer))
+	if err != nil {
+		log.Fatalf("Error parsing server upload duration: %v, %v", float64(cumulativeUploadTimeServer)/float64(totalRuns), err)
+	}
+	fmt.Printf("Client:\nAverage Hash time: %v\nTotal Hash Time: %v\nUpload Time: %v\nTotal Upload Time: %v\nFind Missing Time: %v\n", hashTime, totalHashTime, uploadTime, totalUploadTime, findMissingTime)
 	fmt.Printf("Bytes Hashed: %v\nBytes Uploaded: %v\n", totalHashed, totalUploaded)
 	var hashRate string
 	if rateOfHashing := float64(totalHashed) / (float64(cumulativeHashTime) / (1000 * 1000 * 1000)); rateOfHashing < 1024 {
@@ -182,5 +215,12 @@ func main() {
 		hashRate = fmt.Sprintf("%fGB/s", rateOfHashing/(1024*1024*1024))
 	}
 	fmt.Printf("Rate of Hashing: %s\n", hashRate)
-	fmt.Printf("Server:\nExecute time: %v\nUpload Time: %v\n", executeTime, uploadTimeServer)
+	fmt.Printf("Server:\nExecute time: %v\nUpload Time: %v\nTotal Upload Time: %v\n", executeTime, uploadTimeServer, totalUploadTimeServer)
+	if edit {
+		newText := strings.Join(updatedText, "\n")
+		_, err := f.WriteString(newText)
+		if err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	}
 }

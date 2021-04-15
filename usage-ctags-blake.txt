@@ -1,8 +1,0 @@
-14950400        storage-cas-0
-15888384        storage-cas-1
-14970880        storage-cas-0
-15851520        storage-cas-1
-15319040        storage-cas-0
-15499264        storage-cas-1
-15286272        storage-cas-0
-15507456        storage-cas-1

@@ -1,12 +1,17 @@
 #!/bin/bash
-
-while getopts s: flag
+clean=""
+while getopts s:c flag
 do
   case "${flag}" in
     s) size=${OPTARG};;
+    c) clean=TRUE;;
   esac
 done
 rm -rf experiments
+if [ $clean = "TRUE" ]
+then
+  exit 0
+fi
 mkdir -p experiments/e{1..12}
 cd experiments/e1
 case $size in 
