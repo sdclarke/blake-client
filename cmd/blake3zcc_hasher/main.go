@@ -107,6 +107,7 @@ func main() {
 		log.Fatalf("Something went wrong uploading input root: %v", err)
 	}
 
+	var actionDigest *remoteexecution.Digest
 	if !decompose {
 		command := commands[commandNumber]
 		if commandNumber == 4 {
@@ -129,7 +130,7 @@ func main() {
 		}
 
 		action := createAction(commandDigest, inputRootDigest)
-		actionDigest, err := blobUploader.AddProto(ctx, action)
+		actionDigest, err = blobUploader.AddProto(ctx, action)
 		if err != nil {
 			log.Fatalf("Error uploading action: %v", err)
 		}
@@ -145,7 +146,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error finalising blob uploads %v", err)
 	}
-	log.Printf("Action Digest: %v %v %v %d", actionDigest.GetHashBlake3Zcc(), hex.EncodeToString(actionDigest.GetHashBlake3Zcc()), actionDigest.GetHashOther(), actionDigest.GetSizeBytes())
+	if actionDigest != nil {
+          log.Printf("Action Digest: %v %v %v %d", actionDigest.GetHashBlake3Zcc(), hex.EncodeToString(actionDigest.GetHashBlake3Zcc()), actionDigest.GetHashOther(), actionDigest.GetSizeBytes())
+        }
 	uploadingDuration, err := time.ParseDuration(fmt.Sprintf("%dns", blobUploader.GetTimeUploading()))
 	if err != nil {
 		log.Fatalf("Error parsing duration: %v", err)

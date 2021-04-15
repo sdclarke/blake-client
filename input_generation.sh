@@ -263,8 +263,69 @@ case $size in
     dd if=/dev/zero of=in0 bs=$((1024*1024)) count=750
     ;;
   docker)
-    docker save ubuntu:0 > in0
+    docker save ubuntu:base > in0
     cd ../e2
-    docker save ubuntu:1 > in0
+    docker save ubuntu:wget > in0
+    cd ../e3
+    docker save ubuntu:git > in0
+    cd ../e4
+    id=$(docker create ubuntu:base)
+    docker export $id > in0
+    docker container rm $id
+    cd ../e5
+    id=$(docker create ubuntu:wget)
+    docker export $id > in0
+    docker container rm $id
+    cd ../e6
+    id=$(docker create ubuntu:git)
+    docker export $id > in0
+    docker container rm $id
+    cd ../e7
+    docker save alpine:base > in0
+    cd ../e8
+    docker save alpine:wget > in0
+    cd ../e9
+    docker save alpine:git > in0
+    cd ../e10
+    id=$(docker create alpine:base)
+    docker export $id > in0
+    docker container rm $id
+    cd ../e11
+    id=$(docker create alpine:wget)
+    docker export $id > in0
+    docker container rm $id
+    cd ../e12
+    id=$(docker create alpine:git)
+    docker export $id > in0
+    docker container rm $id
+    mkdir ../e13
+    cd ../e13
+    docker save debian:base > in0
+    mkdir ../e14
+    cd ../e14
+    docker save debian:wget > in0
+    mkdir ../e15
+    cd ../e15
+    docker save debian:git > in0
+    mkdir ../e16
+    cd ../e16
+    id=$(docker create debian:base)
+    docker export $id > in0
+    docker container rm $id
+    mkdir ../e17
+    cd ../e17
+    id=$(docker create debian:wget)
+    docker export $id > in0
+    docker container rm $id
+    mkdir ../e18
+    cd ../e18
+    id=$(docker create debian:git)
+    docker export $id > in0
+    docker container rm $id
+    ;;
+qcow2)
+    cp ~/arch-boxes/output/Arch-Linux-x86_64-basic-20210415.0.qcow2 ./in0
+    cd ../e2
+    cp ~/arch-boxes/output/Arch-Linux-x86_64-cloudimg-20210415.0.qcow2 ./in0
     ;;
 esac

@@ -1,0 +1,20 @@
+Loading: 
+Loading: 0 packages loaded
+Analyzing: target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured)
+INFO: Analyzed target //cmd/blake3zcc_hasher:blake3zcc_hasher (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+[0 / 1] [Prepa] BazelWorkspaceStatusAction stable-status.txt
+Target //cmd/blake3zcc_hasher:blake3zcc_hasher up-to-date:
+  bazel-bin/cmd/blake3zcc_hasher/blake3zcc_hasher_/blake3zcc_hasher
+INFO: Elapsed time: 0.101s, Critical Path: 0.01s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Running command line: bazel-bin/cmd/blake3zcc_hasher/blake3zcc_hasher_/blake3zcc_hasher -a localhost:8980 -d /home/debian/blake-client/experiments/e12 '-b=true' -D -s 8192
+INFO: Build completed successfully, 1 total action
+2021/04/15 19:06:46 Time Hashing: 71.61913ms
+2021/04/15 19:06:48 Bytes Uploaded: 16182512
+2021/04/15 19:06:48 Bytes Hashed: 21454384
+2021/04/15 19:06:48 Missing Blobs: 1957
+2021/04/15 19:06:48 Total Blobs: 2621
+2021/04/15 19:06:48 Time Uploading: 1.819059204s
+2021/04/15 19:06:48 Time Finding Missing Blobs: 26.353382ms
